@@ -4,12 +4,14 @@
 
 
 import pandas as pd
+import numpy as np
 import os
 import matplotlib.pyplot as plt
 import datetime as dt
 import time
 import fnmatch
 import datetime
+
 
 
 def find(pattern, path):
@@ -51,9 +53,6 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
                         year_folder, month_folder, file_name_prefix + 
                         '_' + metric_folder + 'Log_' + datetime.datetime.now().strftime('%d') + '.csv'])
 
-#   RejectDataLogs 
-#       \\rb-ha-01\LocalShare\RuntimeData\RobotFailureLogs\RBHA01_RobotFailureLog_2022.csv
-
     elif directories[metric_folder] == 'F_Y': #RobotFailureLogs
         file_path = os.sep.join([windows_separator_for_network_access, 
                         robot_folder_name, 'LocalShare', 'RuntimeData',
@@ -89,24 +88,104 @@ directories = {
 'UncrimpedZone': 'YMF_D'}
 
 
+
+
+# = = = = = = = = = = = = = = = =#
+# READING ALL FILE(S) TO BE USED #
 # = = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
-# = = = = = = = = = = = = = = = =#
+file_path_RejectData = get_input_file_name('rb-ha-01', 'RBHA01', 'RejectData')
 file_path_RobotFailure = get_input_file_name('rb-ha-01', 'RBHA01', 'RobotFailure')
 file_path_RobotStoppage = get_input_file_name('rb-ha-01', 'RBHA01', 'RobotStoppage')
 
-# = = = == = = = = = = = = = = = = = = = = = #
-# READING FILE(S) AND CONVERTING TO DATETIME #
-# = = = == = = = = = = = = = = = = = = = = = #
+# some columns currently don't have titles, hence are here called reject17-22
+reject_data_log_columns = ['DateTime','Part #','Lot #','Lot Count','Parts Made','Cable Rejects',
+'Swager Misses','FitCut Misses','Lead Rejects','Tail Rejects','HypoRejects','Stuck Rejects',
+'OL Rejects #','UZ Rejects','FL Rejects','Knots','ENFORCER!','Bad Hypo Insert', 'FL OL Rejects',
+'Cam Faults','Ejected Ftgs', 'StakePulls', 'StakePullUnder', 'TailSlideJog', 'TailUnstick',
+'TailSlideJogRejects', 'TailUnstickRejects']
+RejectData_raw = pd.read_csv(file_path_RejectData, names=reject_data_log_columns, skiprows=1)
 RobotFailure_raw = pd.read_csv(file_path_RobotFailure)
 RobotStoppage_raw = pd.read_csv(file_path_RobotStoppage)
+planned_downtime = pd.read_csv('planned_downtime.csv')
 
+# CONVERT TO DATETIME FORMAT
+RejectData_raw['DateTime'] = pd.to_datetime(RejectData_raw['DateTime'])
 RobotFailure_raw['Rst DateTime'] = pd.to_datetime(RobotFailure_raw['Rst DateTime'])
+RobotFailure_raw['LPM DateTime'] = pd.to_datetime(RobotFailure_raw['LPM DateTime'])
 RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
 
 # = = = = = = = = = = #
 # PANDAS MANIPULATION #
 # = = = = = = = = = = #
+# slices the rejects columns, sums them rowwise and assigns the resuls to RejectDat_raw 
+rejects_df = RejectData_raw.iloc[:, lambda columns: np.arange(5,27)]
+RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1)
+
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# LOOKUP TABLE FOR STOPPAGES CLASSIFICATIONS (SCHEDULED DOWNTIME) #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# creating a dictionary of tuples in the format "('Major', 'Minor'): ['planned or non-planned']"
+# columns major and minor will be compared against tuples to retrieve if planned or non-planned downtime
+stoppages_raw_tuples = [((getattr(row, 'majorStoppageReason'), getattr(row, 'minorStoppageReason')),
+      getattr(row, 'classificationStoppageReason') ) for row in planned_downtime.itertuples(index=False)]
+stoppages=dict()
+for student,score in stoppages_raw_tuples:
+    stoppages.setdefault(student, []).append(score)
+#stoppages[('Nonerror','Accidentallightcurtain')]
+
+# CREATING COLUMNS FOR DOWNTIME ## CHANGE THIS SECTION TO USE A LAMBDA FUNCTION INSTEAD OF LOOP
+RobotFailure_raw['Downtime Type'] = 0
+RobotFailure_raw['Minutes_down_at_hour'] = 0
+RobotFailure_raw['remainder'] = 0
+for i in range(0,len(RobotFailure_raw)):
+    try: #stoppages[('Engineering','Code changes')] returns 'planned'
+        RobotFailure_raw['Downtime Type'][i] = stoppages[(RobotFailure_raw['Major'][i],RobotFailure_raw['Minor0'][i])]
+    except:
+        RobotFailure_raw['Downtime Type'][i] = 'no valid code'
+
+# POPULATE COLUMNS FOR DOWNTIME MEASUREMENT
+RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFailure_raw['LPM DateTime']
+
+
+
+
+RobotFailure_raw['Minutes down at the hour'] = np.where(
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute + 
+                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm')) +
+                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'h'))*60 >= 60,
+                                                            'overflow',
+                                                        RobotFailure_raw['Rst DateTime'].dt.minute - 
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute)
+
+RobotFailure_raw['max minutes to be absorbed'] = np.where(
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute + 
+                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's'))/60 >= 60,
+                                                        60 - RobotFailure_raw['LPM DateTime'].dt.minute,
+                                                        RobotFailure_raw['Rst DateTime'].dt.minute -
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute)
+
+
+RobotFailure_raw['remainder left for future hours'] = np.where(
+                                                        RobotFailure_raw['Minutes down at the hour'] != 'overflow',
+                                                        '0',
+                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's')/60) + -
+                                                        (60-RobotFailure_raw['LPM DateTime'].dt.minute))
+
+#RobotFailure_raw['Minutes down at the hour'].head(30)
+#RobotFailure_raw['remainder left for future hours'].head(30)
+#RobotFailure_raw.to_csv('erase_view_only_RobotFailure_raw.csv')
+
+per_hour = pd.DataFrame({'carried': [], 'generated': [], 'used' : [], 'left':[], 'time running':[]})
+per_hour = per_hour.reindex(pd.date_range(start=RobotFailure_raw['LPM DateTime'].round('H').min(),
+                                                  end=RobotFailure_raw['LPM DateTime'].round('H').max(),
+                                                  freq='1H'))
+RejectData_raw
+drange=pd.date_range(per_hour.index.min(),per_hour.index.max())
+[RobotFailure_raw[(RobotFailure_raw['LPM DateTime'] <= ud) & (RobotFailure_raw['LPM DateTime'] >= ud)]['Minutes down at the hour'].sum() for ud in drange]
+
+
 '''
 Metrics:
     tendency of production per shift/day (beg shift to time) -> TABLE 1, as is
@@ -175,3 +254,9 @@ pivot_per_shift.columns
 
 pivot_per_shift.plot(kind='bar', title='', ylabel='count',
          xlabel='', figsize=(10, 8))
+
+
+
+
+
+# https://stackoverflow.com/questions/19913659/pandas-conditional-creation-of-a-series-dataframe-column
