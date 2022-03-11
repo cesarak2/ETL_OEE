@@ -87,6 +87,9 @@ directories = {
 'StartPress': 'YF_M',
 'UncrimpedZone': 'YMF_D'}
 
+robots = {
+'RBHA01': ['RBHA01', 'rb-ha-01'],
+'RBHA02': ['RBHA02', 'rb-ha-02']}
 
 
 
@@ -94,9 +97,16 @@ directories = {
 # READING ALL FILE(S) TO BE USED #
 # = = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
-file_path_RejectData = get_input_file_name('rb-ha-01', 'RBHA01', 'RejectData')
-file_path_RobotFailure = get_input_file_name('rb-ha-01', 'RBHA01', 'RobotFailure')
-file_path_RobotStoppage = get_input_file_name('rb-ha-01', 'RBHA01', 'RobotStoppage')
+
+
+
+selected_robot = 'RBHA01'
+robot_name = robots[selected_robot][0]
+robot_folder = robots[selected_robot][1]
+
+file_path_RejectData = get_input_file_name(robot_folder, robot_name, 'RejectData')
+file_path_RobotFailure = get_input_file_name(robot_folder, robot_name, 'RobotFailure')
+file_path_RobotStoppage = get_input_file_name(robot_folder, robot_name, 'RobotStoppage')
 
 # some columns currently don't have titles, hence are here called reject17-22
 reject_data_log_columns = ['DateTime','Part #','Lot #','Lot Count','Parts Made','Cable Rejects',
@@ -115,145 +125,176 @@ RobotFailure_raw['Rst DateTime'] = pd.to_datetime(RobotFailure_raw['Rst DateTime
 RobotFailure_raw['LPM DateTime'] = pd.to_datetime(RobotFailure_raw['LPM DateTime'])
 RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
 
+
+
 # = = = = = = = = = = #
 # PANDAS MANIPULATION #
 # = = = = = = = = = = #
 # slices the rejects columns, sums them rowwise and assigns the resuls to RejectDat_raw 
-rejects_df = RejectData_raw.iloc[:, lambda columns: np.arange(5,27)]
-RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1)
+columns_rejects = np.arange(5,len(RejectData_raw.columns))
 
+#rejects_df = RejectData_raw.iloc[:, lambda columns: np.arange(5,27)] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
+rejects_df = RejectData_raw.iloc[:, lambda columns: columns_rejects] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
+RejectData_raw.iloc[:, lambda columns: np.arange(5,-1)]
+#RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1) # if all columns were counted
+RejectData_raw['Total Rejects'] = rejects_df['Cable Rejects'] + rejects_df['Swager Misses'] + \
+                                  rejects_df['FitCut Misses'] + rejects_df['Lead Rejects']*.75 + \
+                                  rejects_df['Tail Rejects']*.75 + rejects_df['HypoRejects']*.25 + \
+                                  rejects_df['Stuck Rejects'] + rejects_df['OL Rejects #'] + \
+                                  rejects_df['UZ Rejects'] + rejects_df['FL Rejects'] + \
+                                  rejects_df['Bad Hypo Insert']*.75 + rejects_df['FL OL Rejects'] + \
+                                  rejects_df['Cam Faults'] + rejects_df['Ejected Ftgs']*.25
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # LOOKUP TABLE FOR STOPPAGES CLASSIFICATIONS (SCHEDULED DOWNTIME) #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
-# creating a dictionary of tuples in the format "('Major', 'Minor'): ['planned or non-planned']"
-# columns major and minor will be compared against tuples to retrieve if planned or non-planned downtime
+# creating a dictionary of tuples in the format "('Major', 'Minor'): ['planned or non-planned']".
+# In the target dataset of stoppages, the columns major and minor will be compared against those tuples
+# to retrieve if that stoppage was planned or non-planned downtime
 stoppages_raw_tuples = [((getattr(row, 'majorStoppageReason'), getattr(row, 'minorStoppageReason')),
       getattr(row, 'classificationStoppageReason') ) for row in planned_downtime.itertuples(index=False)]
 stoppages=dict()
-for student,score in stoppages_raw_tuples:
-    stoppages.setdefault(student, []).append(score)
-#stoppages[('Nonerror','Accidentallightcurtain')]
+for major,minor in stoppages_raw_tuples:
+    stoppages.setdefault(major, []).append(minor)
 
-# CREATING COLUMNS FOR DOWNTIME ## CHANGE THIS SECTION TO USE A LAMBDA FUNCTION INSTEAD OF LOOP
+# CREATING COLUMNS FOR DOWNTIME ## (Open action: CHANGE THIS SECTION TO USE A LAMBDA FUNCTION INSTEAD OF LOOP)
 RobotFailure_raw['Downtime Type'] = 0
-RobotFailure_raw['Minutes_down_at_hour'] = 0
-RobotFailure_raw['remainder'] = 0
 for i in range(0,len(RobotFailure_raw)):
     try: #stoppages[('Engineering','Code changes')] returns 'planned'
         RobotFailure_raw['Downtime Type'][i] = stoppages[(RobotFailure_raw['Major'][i],RobotFailure_raw['Minor0'][i])]
-    except:
+    except (KeyError):
         RobotFailure_raw['Downtime Type'][i] = 'no valid code'
 
 # POPULATE COLUMNS FOR DOWNTIME MEASUREMENT
 RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFailure_raw['LPM DateTime']
 
+# adds columns to RobotFailure_raw:
+#    'Minutes down at the hour' is the maximum number of minutes that stoppage could fit inside that hour.
+#       If the the stoppage overflows to the next hour, it is set to '0', hence its maximum value is 59.
+#    'max minutes to be absorbed' is similar to 'Minutes down at the hour', but it is set for all minutes
+#       left, without a maximum.
+#    'remainder left for future hours' is the difference between the total amount of time for that stoppage
+#       and how much it can still be used on that very same hour
 
 
 
 RobotFailure_raw['Minutes down at the hour'] = np.where(
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute + 
-                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm')) +
-                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'h'))*60 >= 60,
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60 +
+                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm') >= 60,
                                                             'overflow',
-                                                        RobotFailure_raw['Rst DateTime'].dt.minute - 
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute)
+#                                                        0, # taking only the minutes doesn't return enought granularity. Taking the decimal from sec
+                                                        (RobotFailure_raw['Rst DateTime'].dt.minute + RobotFailure_raw['Rst DateTime'].dt.second / 60)- 
+                                                        (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second / 60))
 
 RobotFailure_raw['max minutes to be absorbed'] = np.where(
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute + 
-                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's'))/60 >= 60,
-                                                        60 - RobotFailure_raw['LPM DateTime'].dt.minute,
-                                                        RobotFailure_raw['Rst DateTime'].dt.minute -
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute)
+                                                        RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60 +
+                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm') >= 60, #
+                                                        60 - (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60) ,
+                                                        (RobotFailure_raw['Rst DateTime'].dt.minute + RobotFailure_raw['Rst DateTime'].dt.second/60) -
+                                                        (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60))
 
 
 RobotFailure_raw['remainder left for future hours'] = np.where(
                                                         RobotFailure_raw['Minutes down at the hour'] != 'overflow',
+#                                                        RobotFailure_raw['Minutes down at the hour'] > 0.0,
                                                         '0',
-                                                        np.floor(RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's')/60) + -
-                                                        (60-RobotFailure_raw['LPM DateTime'].dt.minute))
+                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's')/60 -
+                                                        (60-(RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60)))
 
-#RobotFailure_raw['Minutes down at the hour'].head(30)
-#RobotFailure_raw['remainder left for future hours'].head(30)
-#RobotFailure_raw.to_csv('erase_view_only_RobotFailure_raw.csv')
+RobotFailure_raw[145:150]
+RobotFailure_reordered = RobotFailure_raw.columns.tolist()
+RobotFailure_reordered = RobotFailure_raw[['LPM DateTime', 'Rst DateTime',  'Downtime Type', 'time_per_stop',
+                                            'Minutes down at the hour', 'max minutes to be absorbed',
+                                            'remainder left for future hours', 'Detail', 'Major', 'Minor0', 'Part#', 'Lot#']]
+RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered.csv')
 
-per_hour = pd.DataFrame({'carried': [], 'generated': [], 'used' : [], 'left':[], 'time running':[]})
-per_hour = per_hour.reindex(pd.date_range(start=RobotFailure_raw['LPM DateTime'].round('H').min(),
-                                                  end=RobotFailure_raw['LPM DateTime'].round('H').max(),
-                                                  freq='1H'))
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# drops all but the last repeated consecutive rows, when the stoppage starts and 
+# the type of stoppage (planned vs. unplanned) are the same. The sttopage on the last row always ends later
+# hence no time is lost by dropping the previous rows.
+
+for i in range(1,len(RobotFailure_reordered)-1):
+    if RobotFailure_reordered['LPM DateTime'][i] == RobotFailure_reordered['LPM DateTime'][i+1] and RobotFailure_reordered['Downtime Type'][i] == RobotFailure_raw['Downtime Type'][i+1]:
+        RobotFailure_reordered.drop(i, axis=0, inplace=True)
+        print('drops row ', i)
+RobotFailure_no_duplicates = RobotFailure_reordered.reset_index(drop=True)
+
+# when they start at the same time, replace the new start with the previous stop, so the whole period the robot
+# didn't work will be a continuous interval of stoppages 
+for i in range(1,len(RobotFailure_no_duplicates)-1):
+    if RobotFailure_no_duplicates['LPM DateTime'][i] == RobotFailure_no_duplicates['LPM DateTime'][i-1]:
+        print('rows: ', RobotFailure_no_duplicates['LPM DateTime'][i])
+        RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
+
+RobotFailure_no_duplicates.to_csv(robot_name + '_view_only_RobotFailure_no_duplicates.csv')
+
+
+
+
+
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+
+RobotFailure_raw.head(15)
+RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw.csv')
+RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#trying resample to get original RobotFailure per hour
+a = RobotFailure_raw
+a.set_index('Rst DateTime', drop=False, inplace=True)
+a.set_index('LPM DateTime', drop=False, inplace=True)
+a['remainder left for future hours'] = a['remainder left for future hours'].astype(float)
+a['time_per_stop'] = a['time_per_stop']/np.timedelta64(1, 's')/60
+
+b = a.resample('H').sum()
+a.dtypes
+a['remainder left for future hours']
+b = a
+b = RobotFailure_raw.drop_duplicates(subset=['LPM DateTime'], keep='last').resample('H').sum()
+#c = RobotFailure_raw.drop_duplicates(subset=['LPM DateTime'], keep='last')
+
+#a.resample('D').sum().columns
+#a.columns
+#a.to_csv('erase_a.csv')
+b.to_csv('erase_b.csv')
+#c.to_csv('erase_c.csv')
+
+#minutes down at hour = 0
+#remainder = 0
+#max minutes to be absorbed OK
+
+
+#per_hour.loc['2022-02-01 10:00:00'] #row
+#per_hour.loc['2022-02-01 10:00:00','carried'] #row and column
+#per_hour.loc[:,'carried'] #column
 RejectData_raw
-drange=pd.date_range(per_hour.index.min(),per_hour.index.max())
-[RobotFailure_raw[(RobotFailure_raw['LPM DateTime'] <= ud) & (RobotFailure_raw['LPM DateTime'] >= ud)]['Minutes down at the hour'].sum() for ud in drange]
+per_hour_range['carried']
+per_hour_range['generated']
+per_hour_range['used']
+per_hour_range['time running']
 
 
-'''
-Metrics:
-    tendency of production per shift/day (beg shift to time) -> TABLE 1, as is
-    total production per shift/day                           -> TABLE 2, groupby shift
-    average production per shift                             -> TABLE 2, groupby shift
-Shifts (from Excel):
-    1st = if >9 AND <18     09:01 to 17:59      9h      10-6
-    2nd = if >17 OR <2      18:00 to 01:59      8h      6-2
-    3rd = else              02:00 to 06:00      4h      2-6
-    1A  = if >6 AND <10     06:01 to 09:00      3h      6-10
-
-Folders:                    frequency of files, saving interval
-        AllToolLivesLogs        per month, real time
-    DB  CableCutTimeLogs        per day, real time
-        ExtraEventsLogs         per day, real time
-    ML  FittingLengthLogs       per day, real time
-    ML  FtgLocationLogs         per day, real time
-    ML/DB OverallLengthLogs     per day, real time
-    ML  PressInsertHeightLogs   per day, real time
-        RejectDataLogs          (per year, once per hour) 
-    DB  RobotFailureLogs        per year, real time
-    DB  RobotStoppageLogs       per month, real time
-        StartPressLogs          per month, real time
-    ML  UncrimpedZoneLogs       per day, real time
-
-Steps:
-    Import files
-    Transform 
-    tarnsform import step into while true loop 
-'''
-
-# CREATE SHIFT COLUMN
-RB20_RejectDataLog_2022['shift'] = 0  
-# POPULATE SHIFTS (MIMICS EXCEL)
-RB20_RejectDataLog_2022.loc[(RB20_RejectDataLog_2022.DateTime.dt.hour >= 0), 'shift'] = int(2)
-RB20_RejectDataLog_2022.loc[(RB20_RejectDataLog_2022.DateTime.dt.hour >= 2), 'shift'] = int(3)
-RB20_RejectDataLog_2022.loc[(RB20_RejectDataLog_2022.DateTime.dt.hour >= 6), 'shift'] = '1A'
-RB20_RejectDataLog_2022.loc[(RB20_RejectDataLog_2022.DateTime.dt.hour >= 10), 'shift'] = int(1)
-RB20_RejectDataLog_2022.loc[(RB20_RejectDataLog_2022.DateTime.dt.hour >= 18), 'shift'] = int(2)
-
-#RB20_RejectDataLog_2022[RB20_RejectDataLog_2022['Parts Made'] > 0].groupby(['shift']).mean()
-#RB20_RejectDataLog_2022.groupby(['shift']).sum()
-#RB20_RejectDataLog_2022.groupby(by=RB20_RejectDataLog_2022.DateTime.dt.date).mean()
-# this one:
-pivot_per_shift = RB20_RejectDataLog_2022.groupby([RB20_RejectDataLog_2022.DateTime.dt.date, 'shift']).count()
-pivot_per_shift = pivot_per_shift.drop('Lot Count', 1)
-
-pivot_per_hour = RB20_RejectDataLog_2022.groupby([RB20_RejectDataLog_2022.DateTime.dt.hour]).count()
-pivot_per_hour_summary = pd.DataFrame(pivot_per_hour['Lot Count'])
-
-'''
-target_per_hour = pass
-pivot_per_hour_summary.DateTime.dt
-'''
+per_hour_range['start time']
+RobotFailure_raw[(RobotFailure_raw['LPM DateTime'] >= per_hour_range['start time']) &
+                (RobotFailure_raw['LPM DateTime'] <= per_hour_range['end time'])]['time_per_stop'].sum()
 
 
-
-
-plt.scatter(RB20_RejectDataLog_2022['DateTime'], RB20_RejectDataLog_2022['Lot Count'])
-plt.scatter(pivot_per_shift['DateTime'], RB20_RejectDataLog_2022['Insert Height q'])
-plt.bar(pivot_per_shift['Insert Height'])
-plt.plot(pivot_per_shift['Insert Height'], pivot_per_shift['DateTime'])
-pivot_per_shift.columns
-#df = df.replace(np.nan, 0)
-#dfg = df.groupby(['home_team'])['arrests'].mean()
-
-pivot_per_shift.plot(kind='bar', title='', ylabel='count',
-         xlabel='', figsize=(10, 8))
 
 
 

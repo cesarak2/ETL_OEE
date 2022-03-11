@@ -4,7 +4,8 @@ erase*.csv  #exported data
 *.xlsx #Excel files
 *.xls  #Excel files
 *.bak  #backup files
-
+*.csv
+!planned_downtime.csv #only csv that needs to be read
 
 # from https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore
 # Byte-compiled / optimized / DLL files
