@@ -11,6 +11,7 @@ import datetime as dt
 import time
 import fnmatch
 import datetime
+#from datetime import datetime, timedelta
 
 
 
@@ -71,6 +72,19 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
     return file_path
 
 
+#https://stackoverflow.com/questions/48937900/round-time-to-nearest-hour-python
+def round_to_next_hour(t):
+    '''
+    Rounds DateTime to next hour (ceiling function)
+    input: timedelta 
+    output: timedelta 
+    '''
+    return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
+               +datetime.timedelta(hours=1))
+
+
+
+
 directories = {
 # Y = year, M = month; 
 # F_D = file per day, F_M = file per month, F_Y = file per year 
@@ -93,14 +107,14 @@ robots = {
 
 
 
-# = = = = = = = = = = = = = = = =#
-# READING ALL FILE(S) TO BE USED #
-# = = = = = = = = = = = = = = = =#
+# = = = = = = = = = = = = = = =#
+# READS ALL FILE(S) TO BE USED #
+# = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
 
 
 
-selected_robot = 'RBHA01'
+selected_robot = 'RBHA02'
 robot_name = robots[selected_robot][0]
 robot_folder = robots[selected_robot][1]
 
@@ -126,24 +140,25 @@ RobotFailure_raw['LPM DateTime'] = pd.to_datetime(RobotFailure_raw['LPM DateTime
 RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
 
 
-
-# = = = = = = = = = = #
-# PANDAS MANIPULATION #
-# = = = = = = = = = = #
+# = = = = = = = = = = = = = = = = = #
+# CALCULATES TOTAL REJECTS PER HOUR #
+# = = = = = = = = = = = = = = = = = #
+''' OBSOLETE WHEN STOPPED SUMMING ALL COLUMNS FOR REJECTS
 # slices the rejects columns, sums them rowwise and assigns the resuls to RejectDat_raw 
-columns_rejects = np.arange(5,len(RejectData_raw.columns))
+#columns_rejects = np.arange(5,len(RejectData_raw.columns))
 
-#rejects_df = RejectData_raw.iloc[:, lambda columns: np.arange(5,27)] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
-rejects_df = RejectData_raw.iloc[:, lambda columns: columns_rejects] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
-RejectData_raw.iloc[:, lambda columns: np.arange(5,-1)]
-#RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1) # if all columns were counted
-RejectData_raw['Total Rejects'] = rejects_df['Cable Rejects'] + rejects_df['Swager Misses'] + \
-                                  rejects_df['FitCut Misses'] + rejects_df['Lead Rejects']*.75 + \
-                                  rejects_df['Tail Rejects']*.75 + rejects_df['HypoRejects']*.25 + \
-                                  rejects_df['Stuck Rejects'] + rejects_df['OL Rejects #'] + \
-                                  rejects_df['UZ Rejects'] + rejects_df['FL Rejects'] + \
-                                  rejects_df['Bad Hypo Insert']*.75 + rejects_df['FL OL Rejects'] + \
-                                  rejects_df['Cam Faults'] + rejects_df['Ejected Ftgs']*.25
+#rejects_df = RejectData_raw.iloc[:, lambda columns: columns_rejects] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
+#RejectData_raw.iloc[:, lambda columns: np.arange(5,-1)]
+#RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1) # if all columns were equally counted
+'''
+RejectData_raw['Total Rejects'] = RejectData_raw['Cable Rejects'] + RejectData_raw['Swager Misses'] + \
+                                  RejectData_raw['FitCut Misses'] + RejectData_raw['Lead Rejects']*.75 + \
+                                  RejectData_raw['Tail Rejects']*.75 + RejectData_raw['HypoRejects']*.25 + \
+                                  RejectData_raw['Stuck Rejects'] + RejectData_raw['OL Rejects #'] + \
+                                  RejectData_raw['UZ Rejects'] + RejectData_raw['FL Rejects'] + \
+                                  RejectData_raw['Bad Hypo Insert']*.75 + RejectData_raw['FL OL Rejects'] + \
+                                  RejectData_raw['Cam Faults'] + RejectData_raw['Ejected Ftgs']*.25
+
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # LOOKUP TABLE FOR STOPPAGES CLASSIFICATIONS (SCHEDULED DOWNTIME) #
@@ -168,6 +183,59 @@ for i in range(0,len(RobotFailure_raw)):
 # POPULATE COLUMNS FOR DOWNTIME MEASUREMENT
 RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFailure_raw['LPM DateTime']
 
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# CLEANS ENTRIES FOR PROCESSING – DELETES REPEATED ROWS & ADJUSTS TIMES FOR SMOOTH TRANSITION #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# drops all but the last repeated consecutive rows, when the stoppage starts and 
+# the type of stoppage (planned vs. unplanned) are the same. The sttopage on the last row always ends later
+# hence no time is lost by dropping the previous rows.
+
+for i in range(1,len(RobotFailure_raw)-1):
+    if RobotFailure_raw['LPM DateTime'][i] == RobotFailure_raw['LPM DateTime'][i+1] and RobotFailure_raw['Downtime Type'][i] == RobotFailure_raw['Downtime Type'][i+1]:
+        RobotFailure_raw.drop(i, axis=0, inplace=True)
+        print('drops row ', i)
+RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True)
+
+# when they start at the same time, replace the new start with the previous stop, so the whole period the robot
+# didn't work will be a continuous interval of stoppages 
+for i in range(1,len(RobotFailure_no_duplicates)-1):
+    if RobotFailure_no_duplicates['LPM DateTime'][i] == RobotFailure_no_duplicates['LPM DateTime'][i-1]:
+        print('rows: ', RobotFailure_no_duplicates['LPM DateTime'][i])
+        RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
+# SPLITS LONG ENTRIES (WHEN OVERFLOWS TO THE NEXT HOUR) INTO TWO #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
+# When any interval goes after the hour (e.g. 7:50 to 9:10), split it in two:
+#   * one from the first start to the first whole hour;
+#   * one from the first whole hour to the end.
+# One split is enough, as only one event will cross the hour. Later hours are going to be either 60 minutes or summed with other entries.
+
+RobotFailure_no_duplicates_H = RobotFailure_no_duplicates.copy()
+'''
+11:50 | 12:50
+      V
+11:50 | 12:00 (transform)
+12:00 | 12:50 (add)
+'''
+for i in range(1,len(RobotFailure_no_duplicates_H)-1): #range from 1 to n-1 because it uses the previous value to compare
+    #if the stoppage goes until next hour. If starts and ends on the same hour, do nothing.
+    if RobotFailure_no_duplicates_H['LPM DateTime'][i].hour != RobotFailure_no_duplicates_H['Rst DateTime'][i].hour:
+        print('converting rows: ', RobotFailure_no_duplicates_H['LPM DateTime'][i])
+        # adds new line: starts on first hour after overflow, ends on original value
+        RobotFailure_no_duplicates_H.loc[i +0.5] = RobotFailure_no_duplicates_H['Rst DateTime'][i], \
+            '','','','','','','','','','','','','', \
+            round_to_next_hour(RobotFailure_no_duplicates_H['LPM DateTime'][i]), \
+            '', \
+            RobotFailure_no_duplicates_H['Downtime Type'][i],''
+        # replaces the real end time to the next round hour, and the next line starts on that hour and goes to the real end
+        RobotFailure_no_duplicates_H['Rst DateTime'].iloc[i] = round_to_next_hour(RobotFailure_no_duplicates_H['LPM DateTime'][i])
+RobotFailure_no_duplicates_H = RobotFailure_no_duplicates_H.sort_index().reset_index(drop=True)
+
+RobotFailure_no_duplicates_H.to_csv(robot_name + '_view_only_insert_within_hours.csv')
+
+
+
 # adds columns to RobotFailure_raw:
 #    'Minutes down at the hour' is the maximum number of minutes that stoppage could fit inside that hour.
 #       If the the stoppage overflows to the next hour, it is set to '0', hence its maximum value is 59.
@@ -175,8 +243,6 @@ RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFail
 #       left, without a maximum.
 #    'remainder left for future hours' is the difference between the total amount of time for that stoppage
 #       and how much it can still be used on that very same hour
-
-
 
 RobotFailure_raw['Minutes down at the hour'] = np.where(
                                                         RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60 +
@@ -206,43 +272,13 @@ RobotFailure_reordered = RobotFailure_raw.columns.tolist()
 RobotFailure_reordered = RobotFailure_raw[['LPM DateTime', 'Rst DateTime',  'Downtime Type', 'time_per_stop',
                                             'Minutes down at the hour', 'max minutes to be absorbed',
                                             'remainder left for future hours', 'Detail', 'Major', 'Minor0', 'Part#', 'Lot#']]
-RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered.csv')
+RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered(2).csv')
 
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# drops all but the last repeated consecutive rows, when the stoppage starts and 
-# the type of stoppage (planned vs. unplanned) are the same. The sttopage on the last row always ends later
-# hence no time is lost by dropping the previous rows.
-
-for i in range(1,len(RobotFailure_reordered)-1):
-    if RobotFailure_reordered['LPM DateTime'][i] == RobotFailure_reordered['LPM DateTime'][i+1] and RobotFailure_reordered['Downtime Type'][i] == RobotFailure_raw['Downtime Type'][i+1]:
-        RobotFailure_reordered.drop(i, axis=0, inplace=True)
-        print('drops row ', i)
-RobotFailure_no_duplicates = RobotFailure_reordered.reset_index(drop=True)
-
-# when they start at the same time, replace the new start with the previous stop, so the whole period the robot
-# didn't work will be a continuous interval of stoppages 
-for i in range(1,len(RobotFailure_no_duplicates)-1):
-    if RobotFailure_no_duplicates['LPM DateTime'][i] == RobotFailure_no_duplicates['LPM DateTime'][i-1]:
-        print('rows: ', RobotFailure_no_duplicates['LPM DateTime'][i])
-        RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
-
-RobotFailure_no_duplicates.to_csv(robot_name + '_view_only_RobotFailure_no_duplicates.csv')
-
-
-
-
-
-
-
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-
+#RobotFailure_no_duplicates.to_csv(robot_name + '_view_only_RobotFailure_no_duplicates.csv')
 
 
 RobotFailure_raw.head(15)
-RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw.csv')
+RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw(1).csv')
 RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
 
 
