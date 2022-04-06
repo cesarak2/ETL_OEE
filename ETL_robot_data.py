@@ -3,23 +3,23 @@
 # ETL for robot data aquisition. Start with RB-HA-01.
 
 
-import pandas as pd
-import numpy as np
-import os
+import numpy as np #main libraries
+import pandas as pd #main libraries
+import datetime #deal with DateTime
+import os #open files in the system
+import fnmatch #search for files using RE
+#import datetime as dt
+#import time
 import matplotlib.pyplot as plt
-import datetime as dt
-import time
-import fnmatch
-import datetime
-#from datetime import datetime, timedelta
 
 
 
 def find(pattern, path):
     '''
-    looks for all files in a folder that contain a certain patter;
-    use a blank list to append all files to be read and worked with
-    input: pattern as RE and path to scan files
+    looks for all files in a folder that contain a certain pattern;
+    use a blank list to append all files to be read and worked with.
+    arguments: pattern as RE and path to scan files.
+    returns: a list with files containing that pattern.
     '''
     result = []
     for root, dirs, files in os.walk(path):
@@ -29,21 +29,16 @@ def find(pattern, path):
     return result
 
 
-# it needs to open: 
-#   RejectDataLogs 
-#       \\rb-ha-01\LocalShare\RuntimeData\RobotFailureLogs\RBHA01_RobotFailureLog_2022.csv
-#   RobotFailureLogs
-#       \\rb-ha-01\LocalShare\RuntimeData\RobotStoppageLogs\2022\RBHA01_RobotStoppageLog_February.csv
-
-
 def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01', metric_folder='RobotFailureLogs',
                     day_folder=str(datetime.datetime.now().strftime('%B')),
                     month_folder=str(datetime.datetime.now().strftime('%B')),
                     year_folder=datetime.datetime.now().strftime('%Y')):
     '''
     returns the path for the file to be oppened.
+    This function uses the robots folders hierarchies to translate the inputs into a file path.
+    If no specific DateTime is provided, it uses the system current DateTime. 
     Arguments: robot_folder_name, file_name_prefix, metric_folder, day_folder, month_folder, year_folder.
-    Returns: path.
+    Returns: file path.
     '''
     windows_separator_for_network_access = '\\' # needs \\ to open files on Windows. To be updated to be more generic
     # metrics have different folders structures, stored in the _directories_ dictionary. Retrieve them for path retrieval
@@ -75,15 +70,17 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
 #https://stackoverflow.com/questions/48937900/round-time-to-nearest-hour-python
 def round_to_next_hour(t):
     '''
-    Rounds DateTime to next hour (ceiling function)
-    input: timedelta 
-    output: timedelta 
+    Rounds DateTime to next hour (equivalent to a ceiling function).
+    input: DateTime.
+    output: DateTime rounded to the next hour.
     '''
     return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
                +datetime.timedelta(hours=1))
 
 
-
+# = = = = = = = = = = = = = = = = = = = = = = #
+# DEFINES FOLDERS STRUCTURES AND ROBOTS NAMES #
+# = = = = = = = = = = = = = = = = = = = = = = #
 
 directories = {
 # Y = year, M = month; 
@@ -101,6 +98,7 @@ directories = {
 'StartPress': 'YF_M',
 'UncrimpedZone': 'YMF_D'}
 
+
 robots = {
 'RBHA01': ['RBHA01', 'rb-ha-01'],
 'RBHA02': ['RBHA02', 'rb-ha-02'],
@@ -108,23 +106,20 @@ robots = {
 }
 
 
-
 # = = = = = = = = = = = = = = =#
 # READS ALL FILE(S) TO BE USED #
 # = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
 
-
-
-selected_robot = 'RBHA02'
-robot_name = robots[selected_robot][0]
-robot_folder = robots[selected_robot][1]
+selected_robot = 'RBHA03'
+robot_name = robots[selected_robot][0]   # from dictionary of names 
+robot_folder = robots[selected_robot][1] # from dictionary of names
 
 file_path_RejectData = get_input_file_name(robot_folder, robot_name, 'RejectData')
 file_path_RobotFailure = get_input_file_name(robot_folder, robot_name, 'RobotFailure')
 file_path_RobotStoppage = get_input_file_name(robot_folder, robot_name, 'RobotStoppage')
 
-# some columns currently don't have titles, hence are here called reject17-22
+# names provided by robots team
 reject_data_log_columns = ['DateTime','Part #','Lot #','Lot Count','Parts Made','Cable Rejects',
 'Swager Misses','FitCut Misses','Lead Rejects','Tail Rejects','HypoRejects','Stuck Rejects',
 'OL Rejects #','UZ Rejects','FL Rejects','Knots','ENFORCER!','Bad Hypo Insert', 'FL OL Rejects',
@@ -135,7 +130,7 @@ RobotFailure_raw = pd.read_csv(file_path_RobotFailure)
 RobotStoppage_raw = pd.read_csv(file_path_RobotStoppage)
 planned_downtime = pd.read_csv('planned_downtime.csv')
 
-# CONVERT TO DATETIME FORMAT
+# convert to DateTime format
 RejectData_raw['DateTime'] = pd.to_datetime(RejectData_raw['DateTime'])
 RobotFailure_raw['Rst DateTime'] = pd.to_datetime(RobotFailure_raw['Rst DateTime'])
 RobotFailure_raw['LPM DateTime'] = pd.to_datetime(RobotFailure_raw['LPM DateTime'])
@@ -145,14 +140,7 @@ RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
 # = = = = = = = = = = = = = = = = = #
 # CALCULATES TOTAL REJECTS PER HOUR #
 # = = = = = = = = = = = = = = = = = #
-''' OBSOLETE WHEN STOPPED SUMMING ALL COLUMNS FOR REJECTS
-# slices the rejects columns, sums them rowwise and assigns the resuls to RejectDat_raw 
-#columns_rejects = np.arange(5,len(RejectData_raw.columns))
-
-#rejects_df = RejectData_raw.iloc[:, lambda columns: columns_rejects] #0:date,1:part, 2:lot#, 3:lotcount, 4:partsmade
-#RejectData_raw.iloc[:, lambda columns: np.arange(5,-1)]
-#RejectData_raw['Total Rejects'] = rejects_df.sum(axis=1) # if all columns were equally counted
-'''
+# weights defined between engineering and design team to capture true bad parts only once. 
 RejectData_raw['Total Rejects'] = RejectData_raw['Cable Rejects'] + RejectData_raw['Swager Misses'] + \
                                   RejectData_raw['FitCut Misses'] + RejectData_raw['Lead Rejects']*.75 + \
                                   RejectData_raw['Tail Rejects']*.75 + RejectData_raw['HypoRejects']*.25 + \
@@ -174,29 +162,27 @@ stoppages=dict()
 for major,minor in stoppages_raw_tuples:
     stoppages.setdefault(major, []).append(minor)
 
-# CREATING COLUMNS FOR DOWNTIME ## (Open action: CHANGE THIS SECTION TO USE A LAMBDA FUNCTION INSTEAD OF LOOP)
+# CREATING COLUMNS FOR DOWNTIME ## (TODO: change loop to apply function)
 RobotFailure_raw['Downtime Type'] = 0
 for i in range(0,len(RobotFailure_raw)):
-    try: #stoppages[('Engineering','Code changes')] returns 'planned'
+    try: #e.g.: stoppages[('Engineering','Code changes')] returns 'planned'
         [RobotFailure_raw['Downtime Type'][i]] = stoppages[(RobotFailure_raw['Major'][i],RobotFailure_raw['Minor0'][i])]
     except (KeyError):
-        RobotFailure_raw['Downtime Type'][i] = 'no valid code'
+        RobotFailure_raw['Downtime Type'][i] = 'no valid code' # is going to be counted as unplanned
 
-# POPULATE COLUMNS FOR DOWNTIME MEASUREMENT
-RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFailure_raw['LPM DateTime']
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # CLEANS ENTRIES FOR PROCESSING – DELETES REPEATED ROWS & ADJUSTS TIMES FOR SMOOTH TRANSITION #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # drops all but the last repeated consecutive rows, when the stoppage starts and 
 # the type of stoppage (planned vs. unplanned) are the same. The sttopage on the last row always ends later
-# hence no time is lost by dropping the previous rows.
+# hence no time is lost by dropping the previous repeated rows.
 
 for i in range(1,len(RobotFailure_raw)-1):
-    if RobotFailure_raw['LPM DateTime'][i] == RobotFailure_raw['LPM DateTime'][i+1] and RobotFailure_raw['Downtime Type'][i] == RobotFailure_raw['Downtime Type'][i+1]:
-        RobotFailure_raw.drop(i, axis=0, inplace=True)
-#        print('drops row ', i)
-RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True)
+    if RobotFailure_raw['LPM DateTime'][i] == RobotFailure_raw['LPM DateTime'][i+1] and \
+    RobotFailure_raw['Downtime Type'][i] == RobotFailure_raw['Downtime Type'][i+1]:
+        RobotFailure_raw.drop(i, axis=0, inplace=True) #drops repeated rows
+RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True) #to avoid jump in index values
 
 # when they start at the same time, replace the new start with the previous stop, so the whole period the robot
 # didn't work will be a continuous interval of stoppages
@@ -206,18 +192,17 @@ RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True)
 # a check for <= accounts for both cases.
 for i in range(1,len(RobotFailure_no_duplicates)):
     if RobotFailure_no_duplicates['LPM DateTime'][i] <= RobotFailure_no_duplicates['LPM DateTime'][i-1]:
-#        print('rows: ', RobotFailure_no_duplicates['LPM DateTime'][i])
         RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
-'''
-RobotFailure_no_duplicates[390:400]
-'''
+
+
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
 # SPLITS LONG ENTRIES (WHEN OVERFLOWS TO THE NEXT HOUR) INTO TWO #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
 # When any interval goes after the hour (e.g. 7:50 to 9:10), split it in two:
 #   * one from the first start to the first whole hour;
 #   * one from the first whole hour to the end.
-# One split is enough, as only one event will cross the hour. Later hours are going to be either 60 minutes or summed with other entries.
+# One split is enough, as only one event will cross the hour. Later hours are going to be either 60 minutes
+# or summed with other entries.
 
 RobotFailure_no_duplicates_split = RobotFailure_no_duplicates.copy()
 '''
@@ -225,11 +210,11 @@ RobotFailure_no_duplicates_split = RobotFailure_no_duplicates.copy()
       V
 11:50 | 12:00 (transforms row)
 12:00 | 13:50 (adds row)
+''' 
+#old version, would create a blank line and fill it with the previous times. New version replicates line and modifies it. 
 '''
-for i in range(1,len(RobotFailure_no_duplicates_split)): #range from 1 to n-1 because it uses the previous value to compare
-    #if the stoppage goes until next hour. If starts and ends on the same hour, do nothing.
+for i in range(1,len(RobotFailure_no_duplicates_split)): #If starts and ends on the same hour, do nothing.
     if RobotFailure_no_duplicates_split['LPM DateTime'][i].hour != RobotFailure_no_duplicates_split['Rst DateTime'][i].hour:
-#        print('converting rows: ', RobotFailure_no_duplicates_split['LPM DateTime'][i])
         # adds new line: starts on first hour after overflow, ends on original value
         RobotFailure_no_duplicates_split.loc[i +0.5] = RobotFailure_no_duplicates_split['Rst DateTime'][i], \
             '','','','','','','','','','','','','', \
@@ -240,7 +225,15 @@ for i in range(1,len(RobotFailure_no_duplicates_split)): #range from 1 to n-1 be
         RobotFailure_no_duplicates_split['Rst DateTime'].iloc[i] = round_to_next_hour(RobotFailure_no_duplicates_split['LPM DateTime'][i])
 RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.sort_index().reset_index(drop=True)
 
-RobotFailure_no_duplicates_split.to_csv(robot_name + '_view_only_insert_within_hours.csv')
+'''
+for i in range(1,len(RobotFailure_no_duplicates_split)): #If starts and ends on the same hour, do nothing.
+    if RobotFailure_no_duplicates_split['LPM DateTime'][i].hour != RobotFailure_no_duplicates_split['Rst DateTime'][i].hour:
+        RobotFailure_no_duplicates_split.loc[i +0.5] = RobotFailure_no_duplicates_split.loc[i] # makes new inter line = previous
+        # starts on first hour after overflow (round_next_hour last LPM), ends on original value (line is already duplicated)
+        RobotFailure_no_duplicates_split.loc[i +0.5, 'LPM DateTime'] = round_to_next_hour(RobotFailure_no_duplicates_split.loc[i, 'LPM DateTime'])
+        # changes row[i] to end on the next rounded hour, so the line [i + 0.5] can start there and go until original end 
+        RobotFailure_no_duplicates_split['Rst DateTime'].iloc[i] = round_to_next_hour(RobotFailure_no_duplicates_split['LPM DateTime'][i])
+RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.sort_index().reset_index(drop=True)
 
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
@@ -253,11 +246,14 @@ RobotFailure_no_duplicates_split.to_csv(robot_name + '_view_only_insert_within_h
 
 # duplicates the last row
 RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.append(RobotFailure_no_duplicates_split.iloc[[-1]], ignore_index=True)
-
 # copies the value from Rst to LPM, to create a zero seconds event
 RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.columns.get_loc('LPM DateTime')] = \
     RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.columns.get_loc('Rst DateTime')]
 
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# ADDS COLUMNS FOR DEBBUGING, TIME PER STOP,  #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = # 
 
 # adds columns to RobotFailure_raw:
 #    'Minutes down at the hour' is the maximum number of minutes that stoppage could fit inside that hour.
@@ -266,48 +262,45 @@ RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.colum
 #       left, without a maximum.
 #    'remainder left for future hours' is the difference between the total amount of time for that stoppage
 #       and how much it can still be used on that very same hour
-#del(RobotFailure_raw)
-RobotFailure_raw=RobotFailure_no_duplicates_split.copy()
+# note that 'max minutes to be absorbed' + 'remainder left for future hours' = total downtime for a given period.
+
+RobotFailure_extra_columns=RobotFailure_no_duplicates_split.copy()
 
 # POPULATE COLUMNS FOR DOWNTIME MEASUREMENT
-RobotFailure_raw['time_per_stop'] = RobotFailure_raw['Rst DateTime'] - RobotFailure_raw['LPM DateTime']
+RobotFailure_extra_columns['time_per_stop'] = RobotFailure_extra_columns['Rst DateTime'] - RobotFailure_extra_columns['LPM DateTime']
 
-RobotFailure_raw['Minutes down at the hour'] = np.where(
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60 +
-                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm') >= 60,
+RobotFailure_extra_columns['Minutes down at the hour'] = np.where(
+                                                        RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second/60 +
+                                                        RobotFailure_extra_columns['time_per_stop']/np.timedelta64(1, 'm') >= 60,
                                                             'overflow',
 #                                                        0, # taking only the minutes doesn't return enought granularity. Taking the decimal from sec
-                                                        (RobotFailure_raw['Rst DateTime'].dt.minute + RobotFailure_raw['Rst DateTime'].dt.second / 60)- 
-                                                        (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second / 60))
+                                                        (RobotFailure_extra_columns['Rst DateTime'].dt.minute + RobotFailure_extra_columns['Rst DateTime'].dt.second / 60)- 
+                                                        (RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second / 60))
 
-RobotFailure_raw['max minutes to be absorbed'] = np.where(
-                                                        RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60 +
-                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 'm') >= 60, #
-                                                        60 - (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60) ,
-                                                        (RobotFailure_raw['Rst DateTime'].dt.minute + RobotFailure_raw['Rst DateTime'].dt.second/60) -
-                                                        (RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60))
+RobotFailure_extra_columns['max minutes to be absorbed'] = np.where(
+                                                        RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second/60 +
+                                                        RobotFailure_extra_columns['time_per_stop']/np.timedelta64(1, 'm') >= 60, #
+                                                        60 - (RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second/60) ,
+                                                        (RobotFailure_extra_columns['Rst DateTime'].dt.minute + RobotFailure_extra_columns['Rst DateTime'].dt.second/60) -
+                                                        (RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second/60))
 
-
-RobotFailure_raw['remainder left for future hours'] = np.where(
-                                                        RobotFailure_raw['Minutes down at the hour'] != 'overflow',
-#                                                        RobotFailure_raw['Minutes down at the hour'] > 0.0,
+RobotFailure_extra_columns['remainder left for future hours'] = np.where(
+                                                        RobotFailure_extra_columns['Minutes down at the hour'] != 'overflow',
+#                                                        RobotFailure_extra_columns['Minutes down at the hour'] > 0.0,
                                                         '0',
-                                                        RobotFailure_raw['time_per_stop']/np.timedelta64(1, 's')/60 -
-                                                        (60-(RobotFailure_raw['LPM DateTime'].dt.minute + RobotFailure_raw['LPM DateTime'].dt.second/60)))
+                                                        RobotFailure_extra_columns['time_per_stop']/np.timedelta64(1, 's')/60 -
+                                                        (60-(RobotFailure_extra_columns['LPM DateTime'].dt.minute + RobotFailure_extra_columns['LPM DateTime'].dt.second/60)))
 
-RobotFailure_raw[145:150]
-RobotFailure_reordered = RobotFailure_raw.columns.tolist()
-RobotFailure_reordered = RobotFailure_raw[['LPM DateTime', 'Rst DateTime',  'Downtime Type', 'time_per_stop',
+RobotFailure_reordered = RobotFailure_extra_columns.columns.tolist()
+RobotFailure_reordered = RobotFailure_extra_columns[['LPM DateTime', 'Rst DateTime',  'Downtime Type', 'time_per_stop',
                                             'Minutes down at the hour', 'max minutes to be absorbed',
                                             'remainder left for future hours', 'Detail', 'Major', 'Minor0', 'Part#', 'Lot#']]
 
-#RobotFailure_no_duplicates.to_csv(robot_name + '_view_only_RobotFailure_no_duplicates.csv')
-#RobotFailure_raw.head(15)
 
 
-RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered(2).csv')
 RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw(1).csv')
-RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
+RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered(2).csv')
+#RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -321,9 +314,7 @@ RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
 
 
 def expand_per_hours(orignal_series):
-    #fit_in_hour = [0] * len(orignal_series)
     fit_in_hour = [0] * orignal_series.size
-    #for i in range(len(orignal_series)):
     for i in range(orignal_series.size):
         a = divmod(int(orignal_series[i]), 60)
         if a[0] == 0: # if doesn't overflow to the next hour, set the value for the hour
