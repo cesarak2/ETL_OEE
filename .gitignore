@@ -6,6 +6,7 @@ erase*.csv  #exported data
 *.bak  #backup files
 *.csv
 !planned_downtime.csv #only csv that needs to be read
+*.lnk #shortcuts
 
 # from https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore
 # Byte-compiled / optimized / DLL files

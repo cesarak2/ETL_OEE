@@ -1,17 +1,26 @@
 # Author: Cesar Krischer
 # 02/03/2022 – initial commit
 # ETL for robot data aquisition. Start with RB-HA-01.
-
+'''
+Imports RobotStoppage table that contains every time the robot stopped,
+associate each stopagge with a planned/unplanned downtime label, spreads
+the downtime (per type) per hour and finally merge it with the RejectData
+table containing production per hour. The resulting table contains,
+per hour:
+    part number, lot, pieces made, n pieces rejected per defect, total downtime,
+    planned downtime and unplanned downtime.
+Calculating OEE per hour is then straightforward:
+    availability = (available time) / (planned time) = 
+        (time - unplanned - planned) / (time - planned)
+    performance = (target production) / (available time)
+    quality = (n good parts produced) / (n total parts produced)
+'''
 
 import numpy as np #main libraries
 import pandas as pd #main libraries
-import datetime #deal with DateTime
-import os #open files in the system
+import datetime
+import os
 import fnmatch #search for files using RE
-#import datetime as dt
-#import time
-import matplotlib.pyplot as plt
-
 
 
 def find(pattern, path):
@@ -34,13 +43,13 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
                     month_folder=str(datetime.datetime.now().strftime('%B')),
                     year_folder=datetime.datetime.now().strftime('%Y')):
     '''
-    returns the path for the file to be oppened.
+    Returns the path for the file to be oppened.
     This function uses the robots folders hierarchies to translate the inputs into a file path.
     If no specific DateTime is provided, it uses the system current DateTime. 
     Arguments: robot_folder_name, file_name_prefix, metric_folder, day_folder, month_folder, year_folder.
     Returns: file path.
     '''
-    windows_separator_for_network_access = '\\' # needs \\ to open files on Windows. To be updated to be more generic
+    windows_separator_for_network_access = '\\' # needs \\ to open files on Windows. TODO be updated to be more generic
     # metrics have different folders structures, stored in the _directories_ dictionary. Retrieve them for path retrieval
     if directories[metric_folder] == 'YMF_D': 
         file_path = os.sep.join([windows_separator_for_network_access, 
@@ -67,7 +76,6 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
     return file_path
 
 
-#https://stackoverflow.com/questions/48937900/round-time-to-nearest-hour-python
 def round_to_next_hour(t):
     '''
     Rounds DateTime to next hour (equivalent to a ceiling function).
@@ -76,6 +84,35 @@ def round_to_next_hour(t):
     '''
     return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
                +datetime.timedelta(hours=1))
+
+
+def expand_per_hours(orignal_series):
+    '''
+    Spreads the sum of downtimes per hour to a maximum of 60 minutes per hour.
+    arguments: a series of downtimes per hour (the total downtime of a stoppage that started on that hour).
+    returns: series of downtimes per hour, maximum 60 minutes per hour.
+    '''
+    fit_in_hour = [0] * orignal_series.size
+    for current_hour in range(orignal_series.size):
+        a = divmod(int(orignal_series[current_hour]), 60)
+        extra_whole_hours = a[0]
+        extra_minutes = a[1]
+        if extra_whole_hours == 0: # if doesn't overflow to the next hour, set the value for the hour
+            try:
+                fit_in_hour[current_hour] = fit_in_hour[current_hour] + orignal_series[current_hour]
+            except KeyError:
+                fit_in_hour[current_hour] = orignal_series[current_hour]
+        else: # if it overflows to the next hour, see how many hours worth of overtime and split by the next hous
+            for next_hour in range(current_hour, current_hour+extra_whole_hours):
+                try:
+                    fit_in_hour[next_hour] = fit_in_hour[next_hour] + 60
+                except KeyError:
+                    fit_in_hour[next_hour] = 60
+            try:
+                fit_in_hour[current_hour+extra_whole_hours] = fit_in_hour[current_hour+extra_whole_hours] + extra_minutes
+            except KeyError:
+                fit_in_hour[current_hour+extra_whole_hours] = extra_minutes
+    return pd.Series(fit_in_hour)
 
 
 # = = = = = = = = = = = = = = = = = = = = = = #
@@ -98,7 +135,6 @@ directories = {
 'StartPress': 'YF_M',
 'UncrimpedZone': 'YMF_D'}
 
-
 robots = {
 'RBHA01': ['RBHA01', 'rb-ha-01'],
 'RBHA02': ['RBHA02', 'rb-ha-02'],
@@ -111,7 +147,7 @@ robots = {
 # = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
 
-selected_robot = 'RBHA03'
+selected_robot = 'RBHA02'
 robot_name = robots[selected_robot][0]   # from dictionary of names 
 robot_folder = robots[selected_robot][1] # from dictionary of names
 
@@ -176,7 +212,7 @@ for i in range(0,len(RobotFailure_raw)):
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # drops all but the last repeated consecutive rows, when the stoppage starts and 
 # the type of stoppage (planned vs. unplanned) are the same. The sttopage on the last row always ends later
-# hence no time is lost by dropping the previous repeated rows.
+# hence no data is lost by dropping the previous repeated rows.
 
 for i in range(1,len(RobotFailure_raw)-1):
     if RobotFailure_raw['LPM DateTime'][i] == RobotFailure_raw['LPM DateTime'][i+1] and \
@@ -188,8 +224,8 @@ RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True) #to avoid j
 # didn't work will be a continuous interval of stoppages
 # In some cases, there is more than 2 changes in planned/unplanned starting at the same time,
 # which means the 2nd time will copy the 1st one, but by the time the 3rd is checked with the 2nd,
-# the 2nd was already changed they will be different. This would lead to a smaller LPM date than the previous.
-# a check for <= accounts for both cases.
+# the 2nd was already changed and they will be different. This would lead to a smaller LPM date than the previous.
+# a check for <= checks for both cases.
 for i in range(1,len(RobotFailure_no_duplicates)):
     if RobotFailure_no_duplicates['LPM DateTime'][i] <= RobotFailure_no_duplicates['LPM DateTime'][i-1]:
         RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
@@ -203,29 +239,13 @@ for i in range(1,len(RobotFailure_no_duplicates)):
 #   * one from the first whole hour to the end.
 # One split is enough, as only one event will cross the hour. Later hours are going to be either 60 minutes
 # or summed with other entries.
-
-RobotFailure_no_duplicates_split = RobotFailure_no_duplicates.copy()
 '''
-11:50 | 13:50 (original row)
-      V
-11:50 | 12:00 (transforms row)
-12:00 | 13:50 (adds row)
+# 11:50 | 13:50 (original row)
+#       V
+# 11:50 | 12:00 (transforms row)
+# 12:00 | 13:50 (adds row)
 ''' 
-#old version, would create a blank line and fill it with the previous times. New version replicates line and modifies it. 
-'''
-for i in range(1,len(RobotFailure_no_duplicates_split)): #If starts and ends on the same hour, do nothing.
-    if RobotFailure_no_duplicates_split['LPM DateTime'][i].hour != RobotFailure_no_duplicates_split['Rst DateTime'][i].hour:
-        # adds new line: starts on first hour after overflow, ends on original value
-        RobotFailure_no_duplicates_split.loc[i +0.5] = RobotFailure_no_duplicates_split['Rst DateTime'][i], \
-            '','','','','','','','','','','','','', \
-            round_to_next_hour(RobotFailure_no_duplicates_split['LPM DateTime'][i]), \
-            '', \
-            RobotFailure_no_duplicates_split['Downtime Type'][i],''
-        # replaces the real end time to the next round hour, and the next line starts on that hour and goes to the real end
-        RobotFailure_no_duplicates_split['Rst DateTime'].iloc[i] = round_to_next_hour(RobotFailure_no_duplicates_split['LPM DateTime'][i])
-RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.sort_index().reset_index(drop=True)
-
-'''
+RobotFailure_no_duplicates_split = RobotFailure_no_duplicates.copy()
 for i in range(1,len(RobotFailure_no_duplicates_split)): #If starts and ends on the same hour, do nothing.
     if RobotFailure_no_duplicates_split['LPM DateTime'][i].hour != RobotFailure_no_duplicates_split['Rst DateTime'][i].hour:
         RobotFailure_no_duplicates_split.loc[i +0.5] = RobotFailure_no_duplicates_split.loc[i] # makes new inter line = previous
@@ -251,9 +271,9 @@ RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.colum
     RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.columns.get_loc('Rst DateTime')]
 
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
-# ADDS COLUMNS FOR DEBBUGING, TIME PER STOP,  #
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = # 
+# = = = = = = = = = = = = = = = = = = = = = #
+# ADDS COLUMNS FOR DEBBUGING / MANUAL CHECK #
+# = = = = = = = = = = = = = = = = = = = = = #
 
 # adds columns to RobotFailure_raw:
 #    'Minutes down at the hour' is the maximum number of minutes that stoppage could fit inside that hour.
@@ -298,112 +318,63 @@ RobotFailure_reordered = RobotFailure_extra_columns[['LPM DateTime', 'Rst DateTi
 
 
 
-RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw(1).csv')
-RobotFailure_reordered.to_csv(robot_name + '_view_only_RobotFailure_reordered(2).csv')
+#RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw(1).csv')
+RobotFailure_reordered.to_csv(robot_name + '_RobotFailure_manual_check(0).csv') #exports to the file folder
 #RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-'''
-=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
-=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
-=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
-'''
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
+# CALCULATES COLUMNS FOR FUTURE SPREADING THE MINUTES PER HOUR #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
+RobotFailure_spread = RobotFailure_no_duplicates_split.copy()
+# adds hour columns to the df so it can be grouped by them. NOTE 'diff_min' = round('max minutes to be absorbed')
+RobotFailure_spread['time_per_stop'] = RobotFailure_spread['Rst DateTime'] - RobotFailure_spread['LPM DateTime']
+RobotFailure_spread['diff_min'] = round(RobotFailure_spread['time_per_stop'].apply(lambda x: x.seconds/60 + x.days*24*60)) #seconds up to a day, days after that
+RobotFailure_spread['DateTime'] = RobotFailure_spread['LPM DateTime'].apply(lambda x: x.floor('H'))
+
+RobotFailure_spread_planned = RobotFailure_spread.loc[RobotFailure_spread['Downtime Type'] == 'planned']
 
 
+# TODO change next 2 sections in a function and re-use it, as they're equal.
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# SPREAD THE HOURS FOR ALL EVENTS AND RETRIEVE TOTAL DOWNTIME #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-def expand_per_hours(orignal_series):
-    fit_in_hour = [0] * orignal_series.size
-    for i in range(orignal_series.size):
-        a = divmod(int(orignal_series[i]), 60)
-        if a[0] == 0: # if doesn't overflow to the next hour, set the value for the hour
-            try:
-                fit_in_hour[i] = fit_in_hour[i] + orignal_series[i]
-            except KeyError:
-                fit_in_hour[i] = orignal_series[i]
-        else:
-            for ite in range(i, i+a[0]):
-                try:
-                    fit_in_hour[ite] = fit_in_hour[ite] + 60
-                except KeyError:
-                    fit_in_hour[ite] = 60
-            try:
-                fit_in_hour[i+a[0]] = fit_in_hour[i+a[0]] + a[1]
-            except KeyError:
-                fit_in_hour[i+a[0]] = a[1]
-    return pd.Series(fit_in_hour)
+# transforms the df in series and groups it by hour
+sum_minutes_per_hour = RobotFailure_spread[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
+list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
+list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
+# uses custom function to spread the minutes across the next hours if they overflow
+spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
+# converts back to DataFrame so it can be merged with the RejectData_raw table 
+minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_down_minutes'])
+minutes_per_hour.index = list_shift_corrected.axes
+RejectData_sum_hour = RejectData_raw.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
 
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# SPREAD THE HOURS FOR PLANNED EVENTS AND RETRIEVE PLANNED DOWNTIME #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#df = pd.read_csv('\\\\ALAN1\ckrischer\\71_ETL_robos_data\\rb-ha-01\\RBHA02_view_only_RobotFailure_reordered(2).csv')
-df = RobotFailure_reordered.copy()
-
-df['LPM DateTime'] = pd.to_datetime(df['LPM DateTime'])
-df['Rst DateTime'] = pd.to_datetime(df['Rst DateTime'])
-
-df['hour'] = df['LPM DateTime'].apply(lambda x: x.hour)
-#df['diff'] = df['Rst DateTime'] - df['LPM DateTime']
-#df['diff_min'] = df['diff'].apply(lambda x: divmod(x.seconds, 60)[0]+x.days*24*60) #seconds up to a day, days after that
-df['diff_min'] = round(df['time_per_stop'].apply(lambda x: x.seconds/60 + x.days*24*60)) #seconds up to a day, days after that
-
-df.tail()
+# transforms the df in series and groups it by hour
+sum_minutes_per_hour = RobotFailure_spread_planned[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
+list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
+list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
+# uses custom function to spread the minutes across the next hours if they overflow
+spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
+# converts back to DataFrame so it can be merged with the RejectData_raw table 
+minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_planned_minutes'])
+minutes_per_hour.index = list_shift_corrected.axes
 
 
-df['DateTime'] = df['LPM DateTime'].apply(lambda x: x.floor('H'))
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# MERGES THE PLANNED AND UNPLANNED DOWNTIMES TABLES AND EXPORT IT #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-
-#adict = df[['hour', 'diff_min']].groupby(['hour']).sum().to_dict()
-#adict = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum().to_dict()
-alist = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-alist = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-alistnoround = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-blist = alist['diff_min'].resample('H').sum()
-list_shift_corrected = blist #clist shifts index by one to match other files
-list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1)
-#clist.to_csv(robot_name + '00_clist.csv')
-
-minutes_per_hour = expand_per_hours(list_shift_corrected)
-#minutes_per_hour.set_axis = blist.axes
-
-df_minutes = pd.DataFrame(minutes_per_hour, columns=['total_down_minutes'])
-df_minutes.index = list_shift_corrected.axes
-df_minutes.head(20)
-a = df_minutes.reset_index()
-type(a.DateTime[0])
-type(RejectData_raw.DateTime[0])
-
-RejectData_sum_hour = RejectData_raw.merge(df_minutes.reset_index(), on=['DateTime', 'DateTime'], how='left')
-#RejectData_sum_hour.to_csv(robot_name + '_view_only_RejectData_sum_hour(3).csv')
-
-
-'''
-DO THE SAME BUT NOW ONLY FOR PLANNED DOWNTIME
-'''
-
-df = RobotFailure_reordered.copy()
-df = df.loc[df['Downtime Type'] == 'planned']
-
-
-df['LPM DateTime'] = pd.to_datetime(df['LPM DateTime'])
-df['Rst DateTime'] = pd.to_datetime(df['Rst DateTime'])
-df['hour'] = df['LPM DateTime'].apply(lambda x: x.hour)
-#df['diff'] = df['Rst DateTime'] - df['LPM DateTime']
-df['diff_min'] = round(df['time_per_stop'].apply(lambda x: x.seconds/60 + x.days*24*60)) #seconds up to a day, days after that
-df['DateTime'] = df['LPM DateTime'].apply(lambda x: x.floor('H'))
-alist = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-alist = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-alistnoround = df[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-blist = alist['diff_min'].resample('H').sum()
-list_shift_corrected = blist #clist shifts index by one to match other files
-list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1)
-minutes_per_hour = expand_per_hours(list_shift_corrected)
-df_minutes = pd.DataFrame(minutes_per_hour, columns=['total_planned_minutes'])
-df_minutes.index = list_shift_corrected.axes
-a = df_minutes.reset_index()
-
-RejectData_sum_hour2 = RejectData_sum_hour.merge(df_minutes.reset_index(), on=['DateTime', 'DateTime'], how='left')
+# merges RejectData, total downtime, and planned downtime. Unplanned downtime is the difference between total and planned.
+# making the difference instead of a sum ensures there will be no instance of more than 60 minutes stopped per hour.
+RejectData_sum_hour2 = RejectData_sum_hour.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
 RejectData_sum_hour2['total_planned_minutes']=RejectData_sum_hour2['total_planned_minutes'].fillna(0)
 RejectData_sum_hour2['total_unplanned_minutes'] = RejectData_sum_hour2['total_down_minutes'] - RejectData_sum_hour2['total_planned_minutes']
-RejectData_sum_hour2.to_csv(robot_name + '_view_only_RejectData_sum_hour(3).csv')
+RejectData_sum_hour2.to_csv(robot_name + '_RejectData_sum_per_hour(1).csv') #exports to the file folder
 
 # https://stackoverflow.com/questions/19913659/pandas-conditional-creation-of-a-series-dataframe-column
