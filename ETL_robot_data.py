@@ -76,14 +76,14 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
     return file_path
 
 
-def round_to_next_hour(t):
+def round_to_next_hour(t, delta=1):
     '''
     Rounds DateTime to next hour (equivalent to a ceiling function).
     input: DateTime.
     output: DateTime rounded to the next hour.
     '''
     return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
-               +datetime.timedelta(hours=1))
+               +datetime.timedelta(hours=delta))
 
 
 def expand_per_hours(orignal_series):
@@ -147,7 +147,7 @@ robots = {
 # = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
 
-selected_robot = 'RBHA02'
+selected_robot = 'RBHA03'
 robot_name = robots[selected_robot][0]   # from dictionary of names 
 robot_folder = robots[selected_robot][1] # from dictionary of names
 
@@ -202,10 +202,9 @@ for major,minor in stoppages_raw_tuples:
 RobotFailure_raw['Downtime Type'] = 0
 for i in range(0,len(RobotFailure_raw)):
     try: #e.g.: stoppages[('Engineering','Code changes')] returns 'planned'
-        [RobotFailure_raw['Downtime Type'][i]] = stoppages[(RobotFailure_raw['Major'][i],RobotFailure_raw['Minor0'][i])]
+        [RobotFailure_raw['Downtime Type'].iloc[i]] = stoppages[(RobotFailure_raw['Major'][i],RobotFailure_raw['Minor0'][i])]
     except (KeyError):
-        RobotFailure_raw['Downtime Type'][i] = 'no valid code' # is going to be counted as unplanned
-
+        RobotFailure_raw['Downtime Type'].iloc[i] = 'no valid code' # is going to be counted as unplanned
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
 # CLEANS ENTRIES FOR PROCESSING – DELETES REPEATED ROWS & ADJUSTS TIMES FOR SMOOTH TRANSITION #
@@ -228,7 +227,7 @@ RobotFailure_no_duplicates = RobotFailure_raw.reset_index(drop=True) #to avoid j
 # a check for <= checks for both cases.
 for i in range(1,len(RobotFailure_no_duplicates)):
     if RobotFailure_no_duplicates['LPM DateTime'][i] <= RobotFailure_no_duplicates['LPM DateTime'][i-1]:
-        RobotFailure_no_duplicates['LPM DateTime'][i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
+        RobotFailure_no_duplicates['LPM DateTime'].iloc[i] = RobotFailure_no_duplicates['Rst DateTime'][i-1]
 
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =#
@@ -335,6 +334,24 @@ RobotFailure_spread['DateTime'] = RobotFailure_spread['LPM DateTime'].apply(lamb
 RobotFailure_spread_planned = RobotFailure_spread.loc[RobotFailure_spread['Downtime Type'] == 'planned']
 
 
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+#                ROUNDS HOURS IF IN BETWEEN TWO HOURS             #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+RejectData_sum_hour_rounded = RejectData_raw.copy()
+for i in range(1, len(RejectData_sum_hour_rounded.DateTime)-1): # so it can compare with previous and next values
+    # to be changed, that hour must be different than thar rounded hour AND
+    # if i rounded value is bigger than rounded previous but smaller than rounded next
+    # as to avoid 4:05 and 4:06 receiving the same data when merging this df with data
+    if RejectData_sum_hour_rounded['DateTime'].iloc[i] != round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i], 0) and \
+    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i-1], 0) < \
+    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i], 0) < \
+    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i+1], 0):
+#        print('rounded hour:' + str(RejectData_sum_hour_rounded['DateTime'].iloc[i]))
+        RejectData_sum_hour_rounded.DateTime.iloc[i] = round_to_next_hour(RejectData_sum_hour_rounded.DateTime[i], 0)
+'''
+RejectData_sum_hour_rounded.to_csv('erase_RejectData_sum_hour_rounded.csv')
+'''
+
 # TODO change next 2 sections in a function and re-use it, as they're equal.
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # SPREAD THE HOURS FOR ALL EVENTS AND RETRIEVE TOTAL DOWNTIME #
@@ -349,7 +366,7 @@ spread_minutes_per_hour = expand_per_hours(list_shift_corrected)
 # converts back to DataFrame so it can be merged with the RejectData_raw table 
 minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_down_minutes'])
 minutes_per_hour.index = list_shift_corrected.axes
-RejectData_sum_hour = RejectData_raw.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
+RejectData_sum_hour_rounded = RejectData_sum_hour_rounded.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # SPREAD THE HOURS FOR PLANNED EVENTS AND RETRIEVE PLANNED DOWNTIME #
@@ -366,15 +383,25 @@ minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_planned
 minutes_per_hour.index = list_shift_corrected.axes
 
 
+
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # MERGES THE PLANNED AND UNPLANNED DOWNTIMES TABLES AND EXPORT IT #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 # merges RejectData, total downtime, and planned downtime. Unplanned downtime is the difference between total and planned.
 # making the difference instead of a sum ensures there will be no instance of more than 60 minutes stopped per hour.
-RejectData_sum_hour2 = RejectData_sum_hour.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
-RejectData_sum_hour2['total_planned_minutes']=RejectData_sum_hour2['total_planned_minutes'].fillna(0)
-RejectData_sum_hour2['total_unplanned_minutes'] = RejectData_sum_hour2['total_down_minutes'] - RejectData_sum_hour2['total_planned_minutes']
-RejectData_sum_hour2.to_csv(robot_name + '_RejectData_sum_per_hour(1).csv') #exports to the file folder
+RejectData_sum_hour = RejectData_sum_hour_rounded.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
+RejectData_sum_hour['total_planned_minutes']=RejectData_sum_hour['total_planned_minutes'].fillna(0)
+RejectData_sum_hour['total_unplanned_minutes'] = RejectData_sum_hour['total_down_minutes'] - RejectData_sum_hour['total_planned_minutes']
+RejectData_sum_hour.to_csv(robot_name + '_RejectData_sum_per_hour(1).csv') #exports to the file folder
 
 # https://stackoverflow.com/questions/19913659/pandas-conditional-creation-of-a-series-dataframe-column
+
+
+
+df = pd.DataFrame(pd.date_range(round_to_next_hour(RejectData_sum_hour['DateTime'].min()),\
+        round_to_next_hour(RejectData_sum_hour['DateTime'].max()),freq='H'),columns= ['DateTime'])\
+            .merge(RejectData_sum_hour,on=['DateTime'],how='outer').fillna('N/A')
+df.to_csv(robot_name + '_complete_final_trial(2).csv') #exports to the file folder
+
+#df.hour = df.date.dt.strftime('%H:%M:%S')
+#df.date = df.date.dt.strftime('%d-%m-%Y')
