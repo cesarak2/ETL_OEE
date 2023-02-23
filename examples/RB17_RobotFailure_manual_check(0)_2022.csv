@@ -1,0 +1,225 @@
+,LPM DateTime,Rst DateTime,Downtime Type,time_per_stop,Minutes down at the hour,max minutes to be absorbed,remainder left for future hours,Detail,Major,Minor0,Part#,Lot#
+1744,12/1/2022,53:39.9,no valid code,0 days 00:07:04.926000,7.083333333,7.083333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1745,12/1/2022,12:14.0,no valid code,0 days 00:01:20.777000,1.35,1.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1746,12/1/2022,00:00.0,no valid code,0 days 00:19:57.808000,-40.03333333,-40.03333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1747,12/1/2022,09:29.2,no valid code,0 days 05:09:29.237000,overflow,60,249.4872833,,Non Error,Unknown cause of failure,123456,lotno
+1748,12/1/2022,30:43.6,non-planned,0 days 00:04:27.206000,4.45,4.45,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1749,12/1/2022,38:44.9,non-planned,0 days 00:04:28.688000,4.466666667,4.466666667,0,,Non Error,Accidental light curtain,123456,lotno
+1750,12/1/2022,00:00.0,no valid code,0 days 00:01:06.870000,-58.88333333,-58.88333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1751,12/1/2022,06:58.1,no valid code,0 days 00:06:58.099000,6.966666667,6.966666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1752,12/1/2022,29:14.4,non-planned,0 days 00:06:30.256000,6.5,6.5,0,,Non Error,Accidental light curtain,123456,lotno
+1753,12/1/2022,37:42.4,non-planned,0 days 00:03:19.683000,3.333333333,3.333333333,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1754,12/1/2022,23:26.3,non-planned,0 days 00:03:57.106000,3.95,3.95,0,,Hypotube Loading,Reject quantity,123456,lotno
+1755,12/1/2022,41:35.1,planned,0 days 00:01:27.021000,1.45,1.45,0,,Engineering,Mechanical changes,123456,lotno
+1756,12/1/2022,00:00.0,non-planned,0 days 00:13:04.738000,-46.91666667,-46.91666667,0,,Auxiliary,Robot 2 Crash,123456,lotno
+1757,12/1/2022,06:28.9,non-planned,0 days 00:06:28.896000,6.466666667,6.466666667,0,,Auxiliary,Robot 2 Crash,123456,lotno
+1758,12/1/2022,32:59.5,non-planned,0 days 00:01:10.577000,1.183333333,1.183333333,0,,Non Error,Accidental light curtain,123456,lotno
+1759,12/1/2022,19:05.1,non-planned,0 days 00:05:48.440000,5.816666667,5.816666667,0,,Non Error,Accidental light curtain,123456,lotno
+1760,12/1/2022,35:47.9,no valid code,0 days 00:04:31.017000,4.516666667,4.516666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1761,12/1/2022,28:47.5,non-planned,0 days 00:01:27.722000,1.466666667,1.466666667,0,,Non Error,Accidental light curtain,123456,lotno
+1762,12/1/2022,00:00.0,no valid code,0 days 00:00:11.614000,-59.8,-59.8,0,,Non Error,Unknown cause of failure,123456,lotno
+1763,12/1/2022,11:16.9,no valid code,0 days 00:11:16.871000,11.26666667,11.26666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1764,12/1/2022,32:51.1,no valid code,0 days 00:01:06.853000,1.116666667,1.116666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1765,12/1/2022,11:22.4,no valid code,0 days 00:06:04.965000,6.083333333,6.083333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1766,12/1/2022,20:38.4,no valid code,0 days 00:01:19.583000,1.333333333,1.333333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1767,12/1/2022,35:17.9,no valid code,0 days 00:10:22.648000,10.36666667,10.36666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1768,12/1/2022,40:36.9,no valid code,0 days 00:04:27.807000,4.45,4.45,0,,Non Error,Unknown cause of failure,123456,lotno
+1769,12/1/2022,59:52.1,no valid code,0 days 00:08:53.312000,8.9,8.9,0,,Non Error,Unknown cause of failure,123456,lotno
+1770,12/1/2022,42:30.2,no valid code,0 days 00:17:11.568000,17.2,17.2,0,,Non Error,Unknown cause of failure,123456,lotno
+1771,12/1/2022,02:19.8,no valid code,0 days 00:00:43.428000,0.716666667,0.716666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1772,12/1/2022,08:29.8,no valid code,0 days 00:06:12.374000,6.2,6.2,0,,Non Error,Unknown cause of failure,123456,lotno
+1773,12/1/2022,53:53.9,no valid code,0 days 00:04:02.987000,4.05,4.05,0,,Non Error,Unknown cause of failure,123456,lotno
+1774,12/1/2022,30:55.0,no valid code,0 days 00:02:46.753000,2.783333333,2.783333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1775,12/2/2022,00:00.0,non-planned,0 days 00:56:32.332000,-3.45,-3.45,0,,Non Error,Accidental light curtain,123456,lotno
+1776,12/2/2022,14:55.7,non-planned,0 days 04:14:55.713000,overflow,60,194.92855,,Non Error,Accidental light curtain,123456,lotno
+1777,12/2/2022,44:55.9,non-planned,0 days 00:04:25.160000,4.416666667,4.416666667,0,,Non Error,Accidental light curtain,123456,lotno
+1778,12/2/2022,54:26.3,non-planned,0 days 00:00:44.703000,0.75,0.75,0,,Non Error,Accidental light curtain,123456,lotno
+1779,12/2/2022,29:48.6,non-planned,0 days 00:04:09.043000,4.15,4.15,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1780,12/2/2022,57:38.8,planned,0 days 00:02:20.724000,2.333333333,2.333333333,0,,Non Error,Material change,123456,lotno
+1781,12/2/2022,53:03.3,non-planned,0 days 00:17:47.786000,17.8,17.8,0,,Non Error,Accidental light curtain,123456,lotno
+1782,12/2/2022,30:14.9,non-planned,0 days 00:05:37.363000,5.616666667,5.616666667,0,,Non Error,Accidental light curtain,123456,lotno
+1783,12/2/2022,33:13.2,non-planned,0 days 00:02:47.002000,2.783333333,2.783333333,0,,Crimping,Stuck in die,123456,lotno
+1784,12/2/2022,40:24.9,no valid code,0 days 00:04:37.500000,4.616666667,4.616666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1785,12/2/2022,00:00.0,non-planned,0 days 00:03:26.584000,-56.55,-56.55,0,,Crimping,Stuck in die,123456,lotno
+1786,12/2/2022,01:11.4,non-planned,0 days 00:01:11.396000,1.183333333,1.183333333,0,,Crimping,Stuck in die,123456,lotno
+1787,12/2/2022,30:11.9,non-planned,0 days 00:04:07.929000,4.133333333,4.133333333,0,,Inspection,Reject quantity,123456,lotno
+1788,12/2/2022,51:19.8,planned,0 days 00:01:59.804000,2,2,0,,Non Error,Material change,123456,lotno
+1789,12/2/2022,53:34.6,non-planned,0 days 00:02:14.817000,2.25,2.25,0,,Non Error,Accidental light curtain,123456,lotno
+1790,12/2/2022,19:04.3,non-planned,0 days 00:00:40.826000,0.683333333,0.683333333,0,,Non Error,Accidental light curtain,123456,lotno
+1791,12/2/2022,50:56.2,non-planned,0 days 00:00:34.351000,0.583333333,0.583333333,0,,Non Error,Accidental light curtain,123456,lotno
+1792,12/2/2022,00:00.0,no valid code,0 days 00:02:24.312000,-57.58333333,-57.58333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1793,12/2/2022,17:09.8,no valid code,0 days 00:17:09.810000,17.15,17.15,0,,Non Error,Unknown cause of failure,123456,lotno
+1794,12/2/2022,20:10.0,non-planned,0 days 00:03:00.144000,3,3,0,,Non Error,Accidental light curtain,123456,lotno
+1795,12/2/2022,55:39.4,non-planned,0 days 00:12:22.327000,12.36666667,12.36666667,0,,Non Error,Accidental light curtain,123456,lotno
+1796,12/2/2022,18:23.0,no valid code,0 days 00:01:11.003000,1.183333333,1.183333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1797,12/2/2022,30:06.6,planned,0 days 00:00:28.152000,0.466666667,0.466666667,0,,Non Error,Material change,123456,lotno
+1798,12/3/2022,58:45.4,no valid code,0 days 00:05:39.115000,5.65,5.65,0,,Non Error,Unknown cause of failure,123456,lotno
+1799,12/3/2022,16:17.3,planned,0 days 00:01:47.494000,1.8,1.8,0,,Non Error,Material change,123456,lotno
+1800,12/3/2022,00:00.0,non-planned,0 days 00:21:45.271000,-38.23333333,-38.23333333,0,,Swaging,Cable stuck in die,123456,lotno
+1801,12/3/2022,03:35.4,non-planned,0 days 04:03:35.380000,overflow,60,183.5896667,,Swaging,Cable stuck in die,123456,lotno
+1802,12/3/2022,22:05.1,non-planned,0 days 00:00:41.616000,0.7,0.7,0,,Non Error,Accidental light curtain,123456,lotno
+1803,12/3/2022,28:22.1,no valid code,0 days 00:03:20.077000,3.333333333,3.333333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1804,12/3/2022,32:25.6,non-planned,0 days 00:01:38.879000,1.65,1.65,0,,Non Error,Accidental light curtain,123456,lotno
+1805,12/3/2022,42:29.1,no valid code,0 days 00:28:52.441000,28.88333333,28.88333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1806,12/3/2022,36:39.2,no valid code,0 days 00:11:39.037000,11.65,11.65,0,,Non Error,Unknown cause of failure,123456,lotno
+1807,12/3/2022,57:07.4,non-planned,0 days 00:04:48.479000,4.816666667,4.816666667,0,,Non Error,Accidental light curtain,123456,lotno
+1808,12/3/2022,00:00.0,no valid code,0 days 00:34:44.665000,-25.25,-25.25,0,,Non Error,Unknown cause of failure,123456,lotno
+1809,12/3/2022,55:39.1,no valid code,1 days 19:55:39.114000,overflow,60,2575.6519,,Non Error,Unknown cause of failure,123456,lotno
+1810,12/5/2022,00:00.0,non-planned,0 days 00:35:19.669000,-24.66666667,-24.66666667,0,,Hypotube Loading,Reject quantity,123456,lotno
+1811,12/5/2022,08:05.8,non-planned,0 days 00:08:05.810000,8.083333333,8.083333333,0,,Hypotube Loading,Reject quantity,123456,lotno
+1812,12/5/2022,10:22.6,non-planned,0 days 00:01:06.073000,1.1,1.1,0,,Crimping,Reject quantity,123456,lotno
+1813,12/5/2022,12:35.4,non-planned,0 days 00:01:06.358000,1.1,1.1,0,,Non Error,Accidental light curtain,123456,lotno
+1814,12/5/2022,43:42.8,non-planned,0 days 00:04:42.507000,4.7,4.7,0,,Non Error,Accidental light curtain,123456,lotno
+1815,12/5/2022,10:44.4,planned,0 days 00:02:47.484000,2.8,2.8,0,,Non Error,Material change,123456,lotno
+1816,12/5/2022,48:14.9,no valid code,0 days 00:00:40.052000,0.666666667,0.666666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1817,12/5/2022,02:45.2,no valid code,0 days 00:01:06.882000,1.116666667,1.116666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1818,12/5/2022,18:45.5,no valid code,0 days 00:04:56.054000,4.933333333,4.933333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1819,12/5/2022,35:52.8,no valid code,0 days 00:00:51.302000,0.85,0.85,0,,Non Error,Unknown cause of failure,123456,lotno
+1820,12/5/2022,48:35.2,no valid code,0 days 00:03:11.609000,3.2,3.2,0,,Non Error,Unknown cause of failure,123456,lotno
+1821,12/5/2022,59:00.5,no valid code,0 days 00:09:52.979000,9.883333333,9.883333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1822,12/5/2022,55:43.9,no valid code,0 days 00:08:56.385000,8.933333333,8.933333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1823,12/5/2022,27:18.8,no valid code,0 days 00:04:18.957000,4.316666667,4.316666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1824,12/5/2022,36:56.1,planned,0 days 00:03:16.980000,3.283333333,3.283333333,0,,Non Error,Material change,123456,lotno
+1825,12/5/2022,08:19.3,no valid code,0 days 00:01:05.333000,1.1,1.1,0,,Non Error,Unknown cause of failure,123456,lotno
+1826,12/6/2022,29:27.7,no valid code,0 days 00:00:47.093000,0.783333333,0.783333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1827,12/6/2022,15:00.2,planned,0 days 00:01:41.440000,1.7,1.7,0,,Non Error,Material change,123456,lotno
+1828,12/6/2022,26:32.2,no valid code,0 days 00:00:33.979000,0.566666667,0.566666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1829,12/6/2022,00:00.0,no valid code,0 days 00:29:13.769000,-30.76666667,-30.76666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1830,12/6/2022,50:11.6,no valid code,0 days 03:50:11.613000,overflow,60,170.19355,,Non Error,Unknown cause of failure,123456,lotno
+1831,12/6/2022,12:26.7,non-planned,0 days 00:00:26.876000,0.45,0.45,0,,Non Error,Accidental light curtain,123456,lotno
+1832,12/6/2022,17:28.6,non-planned,0 days 00:04:14.568000,4.233333333,4.233333333,0,,Swaging,Cable stuck in die,123456,lotno
+1833,12/6/2022,44:53.9,non-planned,0 days 00:07:16.775000,7.266666667,7.266666667,0,,Swaging,Cable stuck in die,123456,lotno
+1834,12/6/2022,31:58.2,non-planned,0 days 00:15:34.432000,15.58333333,15.58333333,0,,Swaging,Cable stuck in die,123456,lotno
+1835,12/6/2022,52:19.2,non-planned,0 days 00:01:29.795000,1.5,1.5,0,,Hypotube Loading,Reject quantity,123456,lotno
+1836,12/6/2022,57:31.4,planned,0 days 00:02:09.622000,2.166666667,2.166666667,0,,Engineering,Position changes,123456,lotno
+1837,12/6/2022,17:50.7,planned,0 days 00:01:15.527000,1.25,1.25,0,,Engineering,Position changes,123456,lotno
+1838,12/6/2022,38:35.8,non-planned,0 days 00:03:20.381000,3.333333333,3.333333333,0,,Hypotube Loading,Missed insert,123456,lotno
+1839,12/6/2022,34:51.1,non-planned,0 days 00:02:21.168000,2.366666667,2.366666667,0,,Hypotube Loading,Missed insert,123456,lotno
+1840,12/6/2022,04:00.8,planned,0 days 00:01:05.682000,1.083333333,1.083333333,0,,Non Error,Material change,123456,lotno
+1841,12/6/2022,22:55.9,non-planned,0 days 00:03:50.711000,3.833333333,3.833333333,0,,Hypotube Loading,Reject quantity,123456,lotno
+1842,12/6/2022,05:45.6,no valid code,0 days 00:00:55.697000,0.933333333,0.933333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1843,12/6/2022,18:46.3,no valid code,0 days 00:07:20.191000,7.333333333,7.333333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1844,12/6/2022,23:50.6,no valid code,0 days 00:02:13,2.216666667,2.216666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1845,12/6/2022,40:31.0,no valid code,0 days 00:14:53.181000,14.9,14.9,0,,Non Error,Unknown cause of failure,123456,lotno
+1846,12/6/2022,10:01.6,no valid code,0 days 00:01:36.556000,1.6,1.6,0,,Non Error,Unknown cause of failure,123456,lotno
+1847,12/7/2022,00:00.0,no valid code,0 days 00:46:45.959000,-13.23333333,-13.23333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1848,12/7/2022,55:25.7,no valid code,0 days 05:55:25.673000,overflow,60,295.4278833,,Non Error,Unknown cause of failure,123456,lotno
+1849,12/7/2022,00:00.0,no valid code,0 days 00:32:30.307000,-27.48333333,-27.48333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1850,12/7/2022,25:51.8,no valid code,5 days 06:25:51.810000,overflow,60,7525.8635,,Non Error,Unknown cause of failure,123456,lotno
+1851,12/12/2022,59:32.0,no valid code,0 days 00:01:01.558000,1.033333333,1.033333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1852,12/12/2022,44:03.4,planned,0 days 00:01:03.824000,1.066666667,1.066666667,0,,Engineering,Position changes,123456,lotno
+1853,12/12/2022,48:43.7,planned,0 days 00:01:44.209000,1.733333333,1.733333333,0,,Engineering,Position changes,123456,lotno
+1854,12/12/2022,59:59.1,non-planned,0 days 00:01:37.170000,1.633333333,1.633333333,0,,Non Error,Accidental light curtain,123456,lotno
+1855,12/12/2022,34:02.6,non-planned,0 days 00:06:57.395000,6.95,6.95,0,,Hypotube Loading,Reject quantity,123456,lotno
+1856,12/12/2022,13:58.4,no valid code,0 days 00:03:11.368000,3.2,3.2,0,,Non Error,Unknown cause of failure,123456,lotno
+1857,12/12/2022,15:19.3,no valid code,0 days 00:01:09.251000,1.15,1.15,0,,Non Error,Unknown cause of failure,123456,lotno
+1858,12/12/2022,16:52.5,no valid code,0 days 00:01:16.384000,1.266666667,1.266666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1859,12/12/2022,36:32.6,no valid code,0 days 00:11:21.120000,11.35,11.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1860,12/12/2022,01:30.8,no valid code,0 days 00:01:23.957000,1.4,1.4,0,,Non Error,Unknown cause of failure,123456,lotno
+1861,12/12/2022,25:55.1,no valid code,0 days 00:01:33.693000,1.566666667,1.566666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1862,12/12/2022,48:09.1,no valid code,0 days 00:01:03.077000,1.066666667,1.066666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1863,12/12/2022,00:00.0,no valid code,0 days 00:05:43.974000,-54.26666667,-54.26666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1864,12/13/2022,58:59.4,no valid code,0 days 00:58:59.440000,58.98333333,58.98333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1865,12/13/2022,06:35.3,non-planned,0 days 00:06:17.274000,6.283333333,6.283333333,0,,Fitting Loading,Fitting already in staker,123456,lotno
+1866,12/13/2022,37:07.0,non-planned,0 days 00:00:56.386000,0.933333333,0.933333333,0,,Non Error,Accidental light curtain,123456,lotno
+1867,12/13/2022,45:54.7,planned,0 days 00:02:47.613000,2.783333333,2.783333333,0,,Non Error,Material change,123456,lotno
+1868,12/13/2022,38:43.6,no valid code,0 days 00:07:30.655000,7.516666667,7.516666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1869,12/13/2022,59:54.4,non-planned,0 days 00:02:27.325000,2.45,2.45,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1870,12/13/2022,42:47.1,no valid code,0 days 00:01:23.442000,1.4,1.4,0,,Non Error,Unknown cause of failure,123456,lotno
+1871,12/13/2022,46:03.4,no valid code,0 days 00:03:48.473000,3.816666667,3.816666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1872,12/13/2022,09:09.3,no valid code,0 days 00:05:42.290000,5.716666667,5.716666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1873,12/13/2022,50:06.4,no valid code,0 days 00:07:13.517000,7.233333333,7.233333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1874,12/13/2022,00:00.0,planned,0 days 00:06:31.980000,-53.46666667,-53.46666667,0,,Non Error,Material change,123456,lotno
+1875,12/13/2022,05:13.1,planned,0 days 00:05:13.067000,5.216666667,5.216666667,0,,Non Error,Material change,123456,lotno
+1876,12/13/2022,27:16.8,no valid code,0 days 00:03:40.334000,3.666666667,3.666666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1877,12/13/2022,49:37.1,no valid code,0 days 00:06:00.250000,6.016666667,6.016666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1878,12/13/2022,00:00.0,no valid code,0 days 00:02:38.609000,-57.35,-57.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1879,12/14/2022,00:21.4,no valid code,0 days 00:00:21.400000,0.35,0.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1880,12/14/2022,26:41.2,non-planned,0 days 00:04:33.804000,4.566666667,4.566666667,0,,Non Error,Accidental light curtain,123456,lotno
+1881,12/14/2022,30:15.2,non-planned,0 days 00:01:42.184000,1.7,1.7,0,,Cable Cutting,Failed to cut,123456,lotno
+1882,12/14/2022,39:19.2,non-planned,0 days 00:00:34.513000,0.583333333,0.583333333,0,,Non Error,Accidental light curtain,123456,lotno
+1883,12/14/2022,43:15.7,planned,0 days 00:02:16.035000,2.266666667,2.266666667,0,,Engineering,Position changes,123456,lotno
+1884,12/14/2022,38:09.9,planned,0 days 00:08:41.751000,8.683333333,8.683333333,0,,Engineering,Position changes,123456,lotno
+1885,12/14/2022,50:48.8,non-planned,0 days 00:01:01.548000,1.016666667,1.016666667,0,,Staking,Reject quantity,123456,lotno
+1886,12/14/2022,45:00.4,planned,0 days 00:02:23.025000,2.383333333,2.383333333,0,,Engineering,Position changes,123456,lotno
+1887,12/14/2022,30:09.2,no valid code,0 days 00:04:44.519000,4.75,4.75,0,,Non Error,Unknown cause of failure,123456,lotno
+1888,12/14/2022,29:33.5,no valid code,0 days 00:18:02.605000,18.05,18.05,0,,Non Error,Unknown cause of failure,123456,lotno
+1889,12/15/2022,02:07.1,planned,0 days 00:02:04.731000,2.083333333,2.083333333,0,,Non Error,Material change,123456,lotno
+1890,12/15/2022,08:55.2,no valid code,0 days 00:02:27.243000,2.466666667,2.466666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1891,12/15/2022,00:00.0,no valid code,0 days 00:25:08.404000,-34.85,-34.85,0,,Non Error,Unknown cause of failure,123456,lotno
+1892,12/15/2022,50:14.0,no valid code,0 days 04:50:14.040000,overflow,60,230.234,,Non Error,Unknown cause of failure,123456,lotno
+1893,12/15/2022,25:44.5,non-planned,0 days 00:00:56.492000,0.933333333,0.933333333,0,,Non Error,Accidental light curtain,123456,lotno
+1894,12/15/2022,00:00.0,non-planned,0 days 00:00:23.374000,-59.6,-59.6,0,,Swaging,Cable stuck in die,123456,lotno
+1895,12/15/2022,50:36.2,non-planned,0 days 00:50:36.242000,50.6,50.6,0,,Swaging,Cable stuck in die,123456,lotno
+1896,12/15/2022,25:05.3,planned,0 days 00:02:55.148000,2.916666667,2.916666667,0,,Non Error,Material change,123456,lotno
+1897,12/15/2022,29:03.5,non-planned,0 days 00:03:41.177000,3.683333333,3.683333333,0,,Non Error,Accidental light curtain,123456,lotno
+1898,12/15/2022,49:07.4,no valid code,0 days 00:00:30.261000,0.5,0.5,0,,Non Error,Unknown cause of failure,123456,lotno
+1899,12/15/2022,23:57.4,no valid code,0 days 00:00:48.281000,0.8,0.8,0,,Non Error,Unknown cause of failure,123456,lotno
+1900,12/15/2022,39:58.4,no valid code,0 days 00:05:39.645000,5.666666667,5.666666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1901,12/15/2022,43:56.6,planned,0 days 00:09:20.599000,9.333333333,9.333333333,0,,Non Error,Material change,123456,lotno
+1902,12/15/2022,53:19.5,no valid code,0 days 00:00:52.519000,0.866666667,0.866666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1903,12/16/2022,22:41.9,no valid code,0 days 00:04:52.057000,4.866666667,4.866666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1904,12/16/2022,58:40.9,planned,0 days 00:02:15.936000,2.266666667,2.266666667,0,,Non Error,Material change,123456,lotno
+1905,12/16/2022,00:00.0,no valid code,0 days 00:10:16.383000,-49.71666667,-49.71666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1906,12/16/2022,14:04.4,no valid code,0 days 00:14:04.423000,14.06666667,14.06666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1907,12/16/2022,16:18.4,no valid code,0 days 00:01:00.699000,1.016666667,1.016666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1908,12/16/2022,32:19.2,no valid code,0 days 00:01:20.865000,1.35,1.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1909,12/16/2022,19:44.1,no valid code,0 days 00:01:07.100000,1.116666667,1.116666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1910,12/16/2022,22:03.7,no valid code,0 days 00:01:51.307000,1.85,1.85,0,,Non Error,Unknown cause of failure,123456,lotno
+1911,12/17/2022,38:05.2,non-planned,0 days 00:14:12.928000,14.21666667,14.21666667,0,,Non Error,Accidental light curtain,123456,lotno
+1912,12/17/2022,41:46.2,no valid code,0 days 00:12:15.515000,12.26666667,12.26666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1913,12/19/2022,00:00.0,planned,0 days 00:59:58.867000,-0.016666667,-0.016666667,0,,Maintenance,Swager,123456,lotno
+1914,12/19/2022,20:00.0,planned,0 days 00:20:00.019000,20,20,0,,Maintenance,Swager,123456,lotno
+1915,12/19/2022,08:31.7,planned,0 days 00:02:54.614000,2.9,2.9,0,,Non Error,Material change,123456,lotno
+1916,12/19/2022,16:58.7,non-planned,0 days 00:06:18.352000,6.3,6.3,0,,Non Error,Accidental light curtain,123456,lotno
+1917,12/19/2022,00:00.0,no valid code,0 days 00:53:42.072000,-6.283333333,-6.283333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1918,12/19/2022,24:32.0,no valid code,1 days 19:24:31.994000,overflow,60,2544.533233,,Non Error,Unknown cause of failure,123456,lotno
+1919,12/21/2022,38:50.3,no valid code,0 days 00:03:13.067000,3.216666667,3.216666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1920,12/21/2022,40:28.5,no valid code,0 days 00:05:26.221000,5.433333333,5.433333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1921,12/21/2022,22:26.7,no valid code,0 days 00:10:23.330000,10.38333333,10.38333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1922,12/21/2022,00:00.0,no valid code,0 days 00:12:46.403000,-47.21666667,-47.21666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1923,12/21/2022,08:39.9,no valid code,0 days 00:08:39.872000,8.65,8.65,0,,Non Error,Unknown cause of failure,123456,lotno
+1924,12/22/2022,23:25.9,no valid code,0 days 00:03:02.381000,3.033333333,3.033333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1925,12/22/2022,27:07.7,planned,0 days 00:01:24.166000,1.4,1.4,0,,Non Error,Material change,123456,lotno
+1926,12/22/2022,00:00.0,non-planned,0 days 00:06:19.741000,-53.66666667,-53.66666667,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1927,12/22/2022,02:10.2,non-planned,0 days 00:02:10.206000,2.166666667,2.166666667,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1928,12/22/2022,24:05.0,non-planned,0 days 00:00:47.732000,0.783333333,0.783333333,0,,Non Error,Accidental light curtain,123456,lotno
+1929,12/22/2022,26:08.2,non-planned,0 days 00:01:35.948000,1.6,1.6,0,,Non Error,Accidental light curtain,123456,lotno
+1930,12/22/2022,21:17.8,planned,0 days 00:04:12.547000,4.2,4.2,0,,Non Error,Material change,123456,lotno
+1931,12/22/2022,25:45.5,non-planned,0 days 00:02:50.129000,2.833333333,2.833333333,0,,Non Error,Accidental light curtain,123456,lotno
+1932,12/22/2022,11:32.1,no valid code,0 days 00:01:15.417000,1.266666667,1.266666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1933,12/22/2022,51:15.3,no valid code,0 days 00:01:17.178000,1.283333333,1.283333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1934,12/22/2022,27:13.0,no valid code,0 days 00:07:20.890000,7.333333333,7.333333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1935,12/22/2022,45:00.1,no valid code,0 days 00:01:20.356000,1.35,1.35,0,,Non Error,Unknown cause of failure,123456,lotno
+1936,12/22/2022,14:55.6,no valid code,0 days 00:01:13.501000,1.216666667,1.216666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1937,12/23/2022,11:08.5,planned,0 days 00:02:05.726000,2.1,2.1,0,,Non Error,Material change,123456,lotno
+1938,12/23/2022,26:23.7,no valid code,0 days 00:00:32.954000,0.55,0.55,0,,Non Error,Unknown cause of failure,123456,lotno
+1939,12/23/2022,43:32.8,planned,0 days 00:02:22.558000,2.366666667,2.366666667,0,,Non Error,Material change,123456,lotno
+1940,12/23/2022,44:27.9,no valid code,0 days 00:03:35.625000,3.583333333,3.583333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1941,12/23/2022,23:11.7,no valid code,0 days 00:03:24.550000,3.4,3.4,0,,Non Error,Unknown cause of failure,123456,lotno
+1942,12/23/2022,53:13.4,no valid code,0 days 00:01:16.240000,1.266666667,1.266666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1943,12/23/2022,17:53.9,no valid code,0 days 00:04:37.950000,4.633333333,4.633333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1944,12/23/2022,35:14.1,non-planned,0 days 00:00:55.821000,0.933333333,0.933333333,0,,Non Error,Accidental light curtain,123456,lotno
+1945,12/24/2022,25:34.2,no valid code,0 days 00:01:54.826000,1.916666667,1.916666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1946,12/28/2022,20:05.8,non-planned,0 days 00:05:58.285000,5.966666667,5.966666667,0,,Hypotube Loading,Hypotube insert sensor,123456,lotno
+1947,12/28/2022,47:42.3,planned,0 days 00:05:30.223000,5.5,5.5,0,,Non Error,Material change,123456,lotno
+1948,12/28/2022,58:14.1,non-planned,0 days 00:03:00.813000,3.016666667,3.016666667,0,,Staking,Cable left behind,123456,lotno
+1949,12/28/2022,06:57.4,planned,0 days 00:03:17.715000,3.3,3.3,0,,Non Error,Material change,123456,lotno
+1950,12/29/2022,04:26.3,no valid code,0 days 00:02:18.008000,2.3,2.3,0,,Non Error,Unknown cause of failure,123456,lotno
+1951,12/29/2022,00:00.0,no valid code,0 days 00:21:51.542000,-38.13333333,-38.13333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1952,12/29/2022,14:18.4,no valid code,0 days 03:14:18.378000,overflow,60,134.3063,,Non Error,Unknown cause of failure,123456,lotno
+1953,12/29/2022,42:26.3,non-planned,0 days 00:04:04.074000,4.066666667,4.066666667,0,,Crimping,Stuck in die,123456,lotno
+1954,12/29/2022,06:03.1,non-planned,0 days 00:03:05.884000,3.1,3.1,0,,Crimping,Stuck in die,123456,lotno
+1955,12/29/2022,30:19.5,no valid code,0 days 00:03:06.527000,3.116666667,3.116666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1956,12/29/2022,41:58.9,no valid code,0 days 00:01:36.438000,1.6,1.6,0,,Non Error,Unknown cause of failure,123456,lotno
+1957,12/30/2022,19:33.7,no valid code,0 days 00:01:48.708000,1.8,1.8,0,,Non Error,Unknown cause of failure,123456,lotno
+1958,12/30/2022,51:28.8,no valid code,0 days 00:01:00.051000,1,1,0,,Non Error,Unknown cause of failure,123456,lotno
+1959,12/30/2022,47:02.2,no valid code,0 days 00:02:48.634000,2.816666667,2.816666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1960,12/30/2022,37:06.8,planned,0 days 00:04:09.684000,4.15,4.15,0,,Non Error,Material change,123456,lotno
+1961,12/30/2022,42:08.7,no valid code,0 days 00:00:55.276000,0.916666667,0.916666667,0,,Non Error,Unknown cause of failure,123456,lotno
+1962,12/30/2022,19:50.0,no valid code,0 days 00:15:02.433000,15.05,15.05,0,,Non Error,Unknown cause of failure,123456,lotno
+1963,12/30/2022,03:41.4,no valid code,0 days 00:02:31.641000,2.533333333,2.533333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1964,12/31/2022,00:00.0,no valid code,0 days 00:01:14.722000,-58.75,-58.75,0,,Non Error,Unknown cause of failure,123456,lotno
+1965,12/31/2022,03:33.0,no valid code,0 days 00:03:32.951000,3.533333333,3.533333333,0,,Non Error,Unknown cause of failure,123456,lotno
+1966,12/31/2022,03:33.0,planned,0 days 00:00:00,0,0,0,,Non Error,Placeholder for OEE calculation,123456,lotno
+1967,12/31/2022,03:33.0,non-planned,0 days 00:00:00,0,0,0,,Non Error,Placeholder for OEE calculation,123456,lotno

@@ -1,0 +1,224 @@
+Rst DateTime,Machine#,Emp#,Major,Minor0,Minor1,Minor2,Minor3,Minor4,Detail,Comment,Part#,Lot#,LotCount,LPM DateTime
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,4802,12/1/2022 0:46
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,4866,12/1/2022 1:10
+12/1/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,4943,12/1/2022 1:40
+12/1/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube slide ,123456,lotno,5000,12/1/2022 7:26
+12/1/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,5238,12/1/2022 8:34
+12/1/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,5763,12/1/2022 10:58
+12/1/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,5810,12/1/2022 11:22
+12/1/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube loaded,123456,lotno,5825,12/1/2022 11:34
+12/1/2022,RB17,495,Hypotube Loading,Reject quantity,NULL,NULL,NULL,NULL,NULL,bent hypotube,123456,lotno,5874,12/1/2022 12:19
+12/1/2022,RB17,495,Engineering,Mechanical changes,Press,NULL,NULL,NULL,NULL,adj hypotube insert guide slightly such that the hypotube is not hitting the edge of the die as it is being inserted,123456,lotno,5899,12/1/2022 12:40
+12/1/2022,RB17,495,Auxiliary,Robot 2 Crash,NULL,NULL,NULL,NULL,NULL,rb2 arm broke while trying to pull out the hypotube assembly from the crimp. Crimp had a large fin that prevented it from going through the hyp insert guide,123456,lotno,5919,12/1/2022 12:46
+12/1/2022,RB17,495,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light curtain trying to retrieve hypotube,123456,lotno,5984,12/1/2022 13:31
+12/1/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,6115,12/1/2022 14:13
+12/1/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,6365,12/1/2022 15:31
+12/1/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,R-4837 Spool#1,123456,lotno,6538,12/1/2022 16:27
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6636,12/1/2022 16:59
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6710,12/1/2022 17:31
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6828,12/1/2022 18:05
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6843,12/1/2022 18:19
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6855,12/1/2022 18:24
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6858,12/1/2022 18:36
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide not in retracted position,123456,lotno,6897,12/1/2022 18:50
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide is not in retracted position,123456,lotno,6897,12/1/2022 18:50
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypotube slide is not in retracted position,123456,lotno,6897,12/1/2022 18:50
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide is not in retracted position,123456,lotno,6991,12/1/2022 19:25
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6991,12/1/2022 19:25
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,7037,12/1/2022 20:01
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7263,12/1/2022 21:02
+12/1/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,7416,12/1/2022 21:49
+12/1/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7543,12/1/2022 22:28
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,8311,12/2/2022 2:03
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,8401,12/2/2022 7:40
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,8401,12/2/2022 7:40
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light ,123456,lotno,8433,12/2/2022 7:53
+12/2/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube slide notin,123456,lotno,8546,12/2/2022 8:25
+12/2/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,R-4853 Spool#31,123456,lotno,8638,12/2/2022 8:55
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,9000,12/2/2022 10:35
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,9114,12/2/2022 11:24
+12/2/2022,RB17,487,Crimping,Stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die,123456,lotno,9115,12/2/2022 11:30
+12/2/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,9341,12/2/2022 12:35
+12/2/2022,RB17,487,Crimping,Stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die ,123456,lotno,9611,12/2/2022 13:56
+12/2/2022,RB17,495,Inspection,Reject quantity,Fitting length,NULL,NULL,NULL,NULL,tight window on RB-17 doesn't allow for much room to take image. Fine tuned camera inspection region,123456,lotno,9682,12/2/2022 14:26
+12/2/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,R-4837 Spool#31,123456,lotno,9969,12/2/2022 15:49
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,9969,12/2/2022 15:49
+12/2/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,8,12/2/2022 16:18
+12/2/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curatin,123456,lotno,126,12/2/2022 16:50
+12/2/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,601,12/2/2022 18:57
+12/2/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain,123456,lotno,601,12/2/2022 18:57
+12/2/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain,123456,lotno,685,12/2/2022 19:43
+12/2/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain,123456,lotno,685,12/2/2022 19:43
+12/2/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,761,12/2/2022 20:17
+12/2/2022,RB17,548,Non Error,Material change,Fitting,NULL,NULL,NULL,NULL,added fittings,123456,lotno,1362,12/2/2022 23:29
+12/3/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide not fully extended,123456,lotno,1677,12/3/2022 0:53
+12/3/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,1733,12/3/2022 1:14
+12/3/2022,RB17,487,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die,123456,lotno,1813,12/3/2022 1:38
+12/3/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,1869,12/3/2022 6:21
+12/3/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,1878,12/3/2022 6:25
+12/3/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,replace small spool,123456,lotno,1887,12/3/2022 6:30
+12/3/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,2030,12/3/2022 7:13
+12/3/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,2176,12/3/2022 8:25
+12/3/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,2230,12/3/2022 8:52
+12/3/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,2230,12/3/2022 8:52
+12/5/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,2520,12/3/2022 10:25
+12/5/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,hypo stuck on die,123456,lotno,2520,12/3/2022 10:25
+12/5/2022,RB17,495,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,NULL,123456,lotno,2617,12/5/2022 7:24
+12/5/2022,RB17,495,Crimping,Reject quantity,Lead,NULL,NULL,NULL,NULL,never good to have a clogged sphincter. HAZ build up in hypo insert bushing,123456,lotno,2617,12/5/2022 7:24
+12/5/2022,RB17,495,Hypotube Loading,Reject quantity,NULL,NULL,NULL,NULL,NULL,bent hyptoube at inseryt,123456,lotno,2617,12/5/2022 7:24
+12/5/2022,RB17,495,Crimping,Reject quantity,Trail,NULL,NULL,NULL,NULL,adj to sphincter housing assembly,123456,lotno,2619,12/5/2022 8:09
+12/5/2022,RB17,495,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,clearing hypotube scrap to see how much FL rejects are produced during the day,123456,lotno,2622,12/5/2022 8:11
+12/5/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,3169,12/5/2022 10:39
+12/5/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,3722,12/5/2022 13:07
+12/5/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,4074,12/5/2022 14:47
+12/5/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,4804,12/5/2022 18:01
+12/5/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,4846,12/5/2022 18:13
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,feeder error,123456,lotno,4907,12/5/2022 18:35
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,5165,12/5/2022 19:45
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,5166,12/5/2022 19:49
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,5341,12/5/2022 20:46
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,5341,12/5/2022 20:46
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,5341,12/5/2022 20:46
+12/5/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,5443,12/5/2022 21:23
+12/5/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,hyposlide is not in retracted position,123456,lotno,5462,12/5/2022 21:33
+12/5/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,5555,12/5/2022 22:07
+12/6/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6083,12/6/2022 0:28
+12/6/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,6241,12/6/2022 1:13
+12/6/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6279,12/6/2022 1:25
+12/6/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,cable stuck in swager,123456,lotno,6517,12/6/2022 2:30
+12/6/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,6787,12/6/2022 8:12
+12/6/2022,RB17,580,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,cable in die enter,123456,lotno,6790,12/6/2022 8:13
+12/6/2022,RB17,487,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die ,123456,lotno,6861,12/6/2022 8:37
+12/6/2022,RB17,487,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die,123456,lotno,6861,12/6/2022 8:37
+12/6/2022,RB17,495,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,polished die..something a tech should be doing,123456,lotno,6913,12/6/2022 9:16
+12/6/2022,RB17,495,Hypotube Loading,Reject quantity,NULL,NULL,NULL,NULL,NULL,NULL,123456,lotno,6977,12/6/2022 9:50
+12/6/2022,RB17,495,Engineering,Position changes,Robot 2,Part specific,OverallLengthCheck_2,NULL,NULL,adjusted by 5 thou away from die in an attempt to reduce FL CAMERA rejects,123456,lotno,6987,12/6/2022 9:55
+12/6/2022,RB17,495,Engineering,Position changes,Robot 2,Part specific,OverallLengthCheck_2,NULL,NULL,reduced inital change by 2.5 thou,123456,lotno,7041,12/6/2022 10:16
+12/6/2022,RB17,580,Hypotube Loading,Missed insert,NULL,NULL,NULL,NULL,NULL,missing inserting,123456,lotno,7106,12/6/2022 10:35
+12/6/2022,RB17,580,Hypotube Loading,Missed insert,NULL,NULL,NULL,NULL,NULL,hypotube not retracking,123456,lotno,7736,12/6/2022 13:32
+12/6/2022,RB17,548,Non Error,Material change,Hypotube,NULL,NULL,NULL,NULL,lightcurtain,123456,lotno,8270,12/6/2022 16:02
+12/6/2022,RB17,495,Hypotube Loading,Reject quantity,NULL,NULL,NULL,NULL,NULL,bent hypotube,123456,lotno,8326,12/6/2022 16:19
+12/6/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,8702,12/6/2022 18:04
+12/6/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,8947,12/6/2022 19:11
+12/6/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,9174,12/6/2022 20:21
+12/6/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide is not in retracted position,123456,lotno,9180,12/6/2022 20:25
+12/6/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,9708,12/6/2022 23:08
+12/7/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,9926,12/7/2022 0:13
+12/12/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,0,12/7/2022 7:27
+12/12/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,102,12/12/2022 14:58
+12/12/2022,RB17,495,Engineering,Position changes,Robot 2,Base,HypoPickUp_2,NULL,NULL,adj to pickup by +2 in z. Sometimes picks up 2 hypotubes,123456,lotno,251,12/12/2022 15:43
+12/12/2022,RB17,495,Engineering,Position changes,Robot 2,Base,HypoPickUp_2,NULL,NULL,fine tune adj by .5 mm in neg z,123456,lotno,252,12/12/2022 15:46
+12/12/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,319,12/12/2022 15:58
+12/12/2022,RB17,495,Hypotube Loading,Reject quantity,NULL,NULL,NULL,NULL,NULL,bent hypo at insert,123456,lotno,410,12/12/2022 16:27
+12/12/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,753,12/12/2022 18:10
+12/12/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,754,12/12/2022 18:14
+12/12/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,755,12/12/2022 18:15
+12/12/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,many hypotube are rejected,123456,lotno,1419,12/12/2022 21:25
+12/12/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,1419,12/12/2022 21:25
+12/12/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,1505,12/12/2022 22:00
+12/12/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1807,12/12/2022 23:24
+12/12/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,feeder error,123456,lotno,1884,12/12/2022 23:47
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,,123456,lotno,1901,12/12/2022 23:54
+12/13/2022,RB17,580,Fitting Loading,Fitting already in staker,NULL,NULL,NULL,NULL,NULL,no fitting loaded cable reject,123456,lotno,2247,12/13/2022 7:00
+12/13/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,2342,12/13/2022 7:36
+12/13/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,2978,12/13/2022 10:43
+12/13/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,3729,12/13/2022 14:31
+12/13/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,bent hypotube okok,123456,lotno,4002,12/13/2022 15:57
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,4139,12/13/2022 16:41
+12/13/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,4347,12/13/2022 17:42
+12/13/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,4407,12/13/2022 18:03
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light tripped,123456,lotno,4747,12/13/2022 19:42
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light trpped,123456,lotno,4747,12/13/2022 19:42
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,4747,12/13/2022 19:42
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,4747,12/13/2022 19:42
+12/13/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,4759,12/13/2022 19:53
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,mfeeding staker,123456,lotno,4794,12/13/2022 20:23
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,cable misfeeding into the staker,123456,lotno,4794,12/13/2022 20:23
+12/13/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,cable misfeeding into the staker,123456,lotno,4971,12/13/2022 21:43
+12/14/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,5275,12/13/2022 23:57
+12/14/2022,RB17,580,Staking,Arm sensor,NULL,NULL,NULL,NULL,NULL,am sensor not reading,123456,lotno,6227,12/14/2022 7:22
+12/14/2022,RB17,580,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,hit curtain okok,123456,lotno,6227,12/14/2022 7:22
+12/14/2022,RB17,580,Cable Cutting,Failed to cut,NULL,NULL,NULL,NULL,NULL,cutting cutting cutting,123456,lotno,6228,12/14/2022 7:28
+12/14/2022,RB17,495,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke lc trying to examine cable entry to staker,123456,lotno,6426,12/14/2022 8:38
+12/14/2022,RB17,495,Engineering,Position changes,Robot 1,Base,InsertIntoStaker_1,NULL,NULL,increase by 1 mm. Some cables (bc of the way 5850 is) were hitting low in the cgb,123456,lotno,6768,12/14/2022 10:41
+12/14/2022,RB17,495,Engineering,Position changes,Robot 1,Base,CutLength_1,NULL,NULL,adj by 1.9 mm in -Y ,123456,lotno,6904,12/14/2022 11:29
+12/14/2022,RB17,495,Staking,Reject quantity,NULL,NULL,NULL,NULL,NULL,adj alignment on cable cutter ,123456,lotno,6916,12/14/2022 11:49
+12/14/2022,RB17,495,Engineering,Position changes,Robot 1,Base,BeforeStakerInsert_1,NULL,NULL,adj all staker insert pos by -.7 mm in x because cable was catching left most edge of bushing and kinking,123456,lotno,7056,12/14/2022 12:42
+12/14/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,7181,12/14/2022 13:25
+12/14/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,8353,12/14/2022 19:11
+12/14/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,8353,12/14/2022 19:11
+12/15/2022,RB17,607,Non Error,Material change,Fitting,NULL,NULL,NULL,NULL,light tripped,123456,lotno,9283,12/15/2022 0:00
+12/15/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,9477,12/15/2022 1:06
+12/15/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,9562,12/15/2022 1:34
+12/15/2022,RB17,580,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain hit,123456,lotno,9667,12/15/2022 7:24
+12/15/2022,RB17,472,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,cleaned die,123456,lotno,9750,12/15/2022 7:59
+12/15/2022,RB17,472,Swaging,Cable stuck in die,NULL,NULL,NULL,NULL,NULL,polished die,123456,lotno,9750,12/15/2022 7:59
+12/15/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,9861,12/15/2022 9:22
+12/15/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,9862,12/15/2022 9:25
+12/15/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,9862,12/15/2022 9:25
+12/15/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,9902,12/15/2022 9:48
+12/15/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,1594,12/15/2022 17:23
+12/15/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1632,12/15/2022 17:34
+12/15/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,2034,12/15/2022 19:34
+12/15/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,2060,12/15/2022 19:52
+12/16/2022,RB17,404,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,4233,12/16/2022 7:17
+12/16/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,5361,12/16/2022 12:56
+12/16/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6137,12/16/2022 16:49
+12/16/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6346,12/16/2022 18:15
+12/16/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,6375,12/16/2022 18:30
+12/16/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7105,12/16/2022 22:18
+12/16/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7107,12/16/2022 22:20
+12/17/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7540,12/17/2022 0:23
+12/17/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtaiun tripped,123456,lotno,7949,12/17/2022 6:29
+12/17/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tyripped,123456,lotno,7949,12/17/2022 6:29
+12/19/2022,RB17,495,Maintenance,Swager,Planned,NULL,NULL,NULL,NULL,Earl performed maintenance on swager,123456,lotno,8883,12/19/2022 8:00
+12/19/2022,RB17,580,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,9472,12/19/2022 12:05
+12/19/2022,RB17,580,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,HIT IT HIT HIT HIT HITITIT,123456,lotno,9692,12/19/2022 13:10
+12/21/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,start ing a new job,123456,lotno,0,12/19/2022 15:06
+12/21/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,588,12/21/2022 14:35
+12/21/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1216,12/21/2022 17:35
+12/21/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1534,12/21/2022 19:12
+12/21/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1928,12/21/2022 21:47
+12/22/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,2397,12/22/2022 0:20
+12/22/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,2608,12/22/2022 1:25
+12/22/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube loading,123456,lotno,4181,12/22/2022 8:53
+12/22/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube loaded,123456,lotno,4181,12/22/2022 8:53
+12/22/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,4470,12/22/2022 10:23
+12/22/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,4472,12/22/2022 10:24
+12/22/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,5082,12/22/2022 13:17
+12/22/2022,RB17,487,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,broke light,123456,lotno,5084,12/22/2022 13:22
+12/22/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtainh tripped,123456,lotno,5624,12/22/2022 16:10
+12/22/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,5977,12/22/2022 17:49
+12/22/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide not fully extended,123456,lotno,6287,12/22/2022 19:19
+12/22/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6770,12/22/2022 21:43
+12/22/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,6868,12/22/2022 22:13
+12/23/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,7479,12/23/2022 1:09
+12/23/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,8496,12/23/2022 7:25
+12/23/2022,RB17,487,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,8954,12/23/2022 9:41
+12/23/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,572,12/23/2022 17:40
+12/23/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide not fully extended,123456,lotno,698,12/23/2022 18:19
+12/23/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,800,12/23/2022 18:51
+12/23/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,870,12/23/2022 19:13
+12/23/2022,RB17,548,Non Error,Accidental light curtain,NULL,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1139,12/23/2022 20:34
+12/24/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,2168,12/24/2022 1:23
+12/28/2022,RB17,580,Hypotube Loading,Hypotube insert sensor,NULL,NULL,NULL,NULL,NULL,hypotube slide ,123456,lotno,3324,12/28/2022 14:14
+12/28/2022,RB17,580,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,3609,12/28/2022 15:42
+12/28/2022,RB17,495,Staking,Cable left behind,NULL,NULL,NULL,NULL,NULL,NULL,123456,lotno,3629,12/28/2022 15:55
+12/28/2022,RB17,607,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,4512,12/28/2022 20:03
+12/29/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypo slide not fully extended,123456,lotno,5329,12/29/2022 0:02
+12/29/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,6295,12/29/2022 4:38
+12/29/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,6295,12/29/2022 4:38
+12/29/2022,RB17,487,Crimping,Stuck in die,NULL,NULL,NULL,NULL,NULL,Stuck in die.,123456,lotno,6822,12/29/2022 10:38
+12/29/2022,RB17,487,Crimping,Stuck in die,NULL,NULL,NULL,NULL,NULL,stuck in die,123456,lotno,7048,12/29/2022 12:02
+12/29/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7901,12/29/2022 17:27
+12/29/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7901,12/29/2022 17:27
+12/29/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,7932,12/29/2022 17:40
+12/30/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,9252,12/30/2022 0:17
+12/30/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,9362,12/30/2022 0:50
+12/30/2022,RB17,405,Non Error,Unknown cause of failure,Yes,NULL,NULL,NULL,NULL,light curtain tripped,123456,lotno,113,12/30/2022 15:44
+12/30/2022,RB17,495,Non Error,Material change,Cable,NULL,NULL,NULL,NULL,,123456,lotno,234,12/30/2022 16:32
+12/30/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light tripped,123456,lotno,412,12/30/2022 17:41
+12/30/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,642,12/30/2022 19:04
+12/30/2022,RB17,607,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,hypotube slide not fully extended,123456,lotno,1104,12/30/2022 22:01
+12/31/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1592,12/31/2022 0:58
+12/31/2022,RB17,448,Non Error,Unknown cause of failure,No,NULL,NULL,NULL,NULL,light curtain,123456,lotno,1592,12/31/2022 0:58

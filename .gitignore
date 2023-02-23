@@ -6,6 +6,12 @@ erase*.csv  #exported data
 *.bak  #backup files
 *.csv
 !planned_downtime.csv #only csv that needs to be read
+#examples
+!RB17_complete_final_trial(2)_2022.csv
+!RB17_RobotFailure_manual_check(0)_2022.csv
+!RB17_RejectDataLog_2022.csv
+!RB17_RobotFailureLog_2022.csv
+
 *.lnk #shortcuts
 log.txt
 
