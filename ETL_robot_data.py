@@ -1,6 +1,6 @@
-# Author: Cesar Krischer
+# Author: Cesar Krischer 
 # 02/03/2022 – initial commit
-# ETL for robot data aquisition. Start with RB-HA-01.
+# ETL for robot data aquisition. Start with Rb-17.
 '''
 Imports RobotStoppage table that contains every time the robot stopped,
 associate each stopagge with a planned/unplanned downtime label, spreads
@@ -38,10 +38,10 @@ def find(pattern, path):
     return result
 
 
-def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01', metric_folder='RobotFailureLogs',
+def get_input_file_name(robot_folder_name='Rb-17', file_name_prefix='RB17', metric_folder='RobotFailureLogs',
                     day_folder=str(datetime.datetime.now().strftime('%B')),
                     month_folder=str(datetime.datetime.now().strftime('%B')),
-                    year_folder=datetime.datetime.now().strftime('%Y')):
+                    year_folder=2022):#datetime.datetime.now().strftime('%Y')):
     '''
     Returns the path for the file to be oppened.
     This function uses the robots folders hierarchies to translate the inputs into a file path.
@@ -52,27 +52,27 @@ def get_input_file_name(robot_folder_name='rb-ha-01', file_name_prefix='RBHA01',
     windows_separator_for_network_access = '\\' # needs \\ to open files on Windows. TODO be updated to be more generic
     # metrics have different folders structures, stored in the _directories_ dictionary. Retrieve them for path retrieval
     if directories[metric_folder] == 'YMF_D': 
-        file_path = os.sep.join([windows_separator_for_network_access, 
-                        robot_folder_name, 'LocalShare', 'RuntimeData',
-                        metric_folder + 'Logs', #folder ends with 'Logs' and files end with 'Log'
-                        year_folder, month_folder, file_name_prefix + 
-                        '_' + metric_folder + 'Log_' + datetime.datetime.now().strftime('%d') + '.csv'])
+        file_path = os.sep.join([str(windows_separator_for_network_access), 
+                        str(robot_folder_name), 'LocalShare', 'RuntimeData',
+                        str(metric_folder) + 'Logs', #folder ends with 'Logs' and files end with 'Log'
+                        str(year_folder), str(month_folder), str(file_name_prefix) + 
+                        '_' + str(metric_folder) + 'Log_' + datetime.datetime.now().strftime('%d') + '.csv'])
 
     elif directories[metric_folder] == 'F_Y': #RobotFailureLogs
-        file_path = os.sep.join([windows_separator_for_network_access, 
-                        robot_folder_name, 'LocalShare', 'RuntimeData',
-                        metric_folder + 'Logs', #folder ends with 'Logs' and files end with 'Log'
+        file_path = os.sep.join([str(windows_separator_for_network_access), 
+                        str(robot_folder_name), 'LocalShare', 'RuntimeData',
+                        str(metric_folder) + 'Logs', #folder ends with 'Logs' and files end with 'Log'
                         #year_folder, 
                         #month_folder,
-                        file_name_prefix + '_' + metric_folder + 'Log_' +
-                        year_folder + '.csv'])
+                        str(file_name_prefix) + '_' + str(metric_folder) + 'Log_' +
+                        str(year_folder) + '.csv'])
 
     elif directories[metric_folder] == 'YF_M': #RobotStoppageLogs
-        file_path = os.sep.join([windows_separator_for_network_access, 
-                        robot_folder_name, 'LocalShare', 'RuntimeData',
-                        metric_folder + 'Logs', #folder ends with 'Logs' and files end with 'Log'
-                        year_folder,
-                        file_name_prefix + '_' + metric_folder + 'Log_' + month_folder + '.csv'])
+        file_path = os.sep.join([str(windows_separator_for_network_access), 
+                        str(robot_folder_name), 'LocalShare', 'RuntimeData',
+                        str(metric_folder) + 'Logs', #folder ends with 'Logs' and files end with 'Log'
+                        str(year_folder),
+                        str(file_name_prefix) + '_' + str(metric_folder) + 'Log_' + month_folder + '.csv'])
     return file_path
 
 
@@ -138,7 +138,8 @@ directories = {
 robots = {
 'RBHA01': ['RBHA01', 'rb-ha-01'],
 'RBHA02': ['RBHA02', 'rb-ha-02'],
-'RBHA03': ['RBHA03', 'rb-ha-03']
+'RBHA03': ['RBHA03', 'rb-ha-03'],
+'RB17': ['RB17', 'Rb-17']
 }
 
 
@@ -147,7 +148,8 @@ robots = {
 # = = = = = = = = = = = = = = =#
 # DEFINING FILE(S) TO BE OPPENED #
 
-selected_robot = 'RBHA03'
+#selected_robot = 'RBHA02' moved line to position 1
+selected_robot = 'RB17'
 robot_name = robots[selected_robot][0]   # from dictionary of names 
 robot_folder = robots[selected_robot][1] # from dictionary of names
 
@@ -163,14 +165,14 @@ reject_data_log_columns = ['DateTime','Part #','Lot #','Lot Count','Parts Made',
 'TailSlideJogRejects', 'TailUnstickRejects']
 RejectData_raw = pd.read_csv(file_path_RejectData, names=reject_data_log_columns, skiprows=1)
 RobotFailure_raw = pd.read_csv(file_path_RobotFailure)
-RobotStoppage_raw = pd.read_csv(file_path_RobotStoppage)
 planned_downtime = pd.read_csv('planned_downtime.csv')
+#RobotStoppage_raw = pd.read_csv(file_path_RobotStoppage)
 
 # convert to DateTime format
 RejectData_raw['DateTime'] = pd.to_datetime(RejectData_raw['DateTime'])
 RobotFailure_raw['Rst DateTime'] = pd.to_datetime(RobotFailure_raw['Rst DateTime'])
 RobotFailure_raw['LPM DateTime'] = pd.to_datetime(RobotFailure_raw['LPM DateTime'])
-RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
+#RobotStoppage_raw['DateTime'] = pd.to_datetime(RobotStoppage_raw['DateTime'])
 
 
 # = = = = = = = = = = = = = = = = = #
@@ -255,19 +257,31 @@ for i in range(1,len(RobotFailure_no_duplicates_split)): #If starts and ends on 
 RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.sort_index().reset_index(drop=True)
 
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
-# CREATES A FAKE EVENT OF 0 SEC AT THE LAST ROW FOR MAKING THE RANGE FOR RESAMPLE #
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = # 
-# When resampling, the last value in the df is going to be the final range of the new array.
-# By adding a fake value of 0 seconds, it forces the new array to finish at that hour;
-# as it necessaryly happens after the last real value, it forces the function to count
-# time to be in range.
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = #
+# CREATES 2 FAKE EVENTS OF 0 SEC AT THE LAST ROWS FOR MAKING THE RANGE FOR RESAMPLE #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = # 
+#     When resampling, the last value in the df is going to be the final range of the
+# new array. By adding a fake value of 0 seconds, it forces the new array to finish at
+# that hour; as it necessaryly happens after the last real value, it forces the function
+# to count time to be in range.
+#     It needs to be one of each (planned and unplanned downtime) as they'll be split.
+
 
 # duplicates the last row
-RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.append(RobotFailure_no_duplicates_split.iloc[[-1]], ignore_index=True)
+RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.append(RobotFailure_no_duplicates_split.tail(1), ignore_index=True)
+# changes descriptions to make clear when exporting table that those were created
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Major')] = 'Non Error'
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Minor0')] = 'Placeholder for OEE calculation'
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Minor1')] = 'Placeholder for OEE calculation'
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Comment')] = 'Placeholder for OEE calculation'
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Downtime Type')] = 'planned'
 # copies the value from Rst to LPM, to create a zero seconds event
 RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.columns.get_loc('LPM DateTime')] = \
     RobotFailure_no_duplicates_split.iloc[-1, RobotFailure_no_duplicates_split.columns.get_loc('Rst DateTime')]
+# repeat the same steps but for non-planned downtime, as the tables will be split to spread the downtime through the hours;
+RobotFailure_no_duplicates_split = RobotFailure_no_duplicates_split.append(RobotFailure_no_duplicates_split.tail(1), ignore_index=True)
+# as the times and descriptions were already changed, only the Downtime Type must be updated
+RobotFailure_no_duplicates_split.loc[RobotFailure_no_duplicates_split.index[-1], ('Downtime Type')] = 'non-planned'
 
 
 # = = = = = = = = = = = = = = = = = = = = = #
@@ -318,7 +332,7 @@ RobotFailure_reordered = RobotFailure_extra_columns[['LPM DateTime', 'Rst DateTi
 
 
 #RejectData_raw.to_csv(robot_name + '_view_only_RejectData_raw(1).csv')
-RobotFailure_reordered.to_csv(robot_name + '_RobotFailure_manual_check(0).csv') #exports to the file folder
+RobotFailure_reordered.to_csv(robot_name + '_RobotFailure_manual_check(0)_2022.csv') #exports to the file folder
 #RobotFailure_raw.to_csv(robot_name + '_view_only_RobotFailure_raw.csv')
 
 
@@ -343,9 +357,9 @@ for i in range(1, len(RejectData_sum_hour_rounded.DateTime)-1): # so it can comp
     # if i rounded value is bigger than rounded previous but smaller than rounded next
     # as to avoid 4:05 and 4:06 receiving the same data when merging this df with data
     if RejectData_sum_hour_rounded['DateTime'].iloc[i] != round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i], 0) and \
-    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i-1], 0) < \
-    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i], 0) < \
-    round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i+1], 0):
+                                                          round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i-1], 0) < \
+                                                          round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i], 0) < \
+                                                          round_to_next_hour(RejectData_sum_hour_rounded['DateTime'].iloc[i+1], 0):
 #        print('rounded hour:' + str(RejectData_sum_hour_rounded['DateTime'].iloc[i]))
         RejectData_sum_hour_rounded.DateTime.iloc[i] = round_to_next_hour(RejectData_sum_hour_rounded.DateTime[i], 0)
 '''
@@ -356,32 +370,41 @@ RejectData_sum_hour_rounded.to_csv('erase_RejectData_sum_hour_rounded.csv')
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # SPREAD THE HOURS FOR ALL EVENTS AND RETRIEVE TOTAL DOWNTIME #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-# transforms the df in series and groups it by hour
-sum_minutes_per_hour = RobotFailure_spread[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
-list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
-# uses custom function to spread the minutes across the next hours if they overflow
-spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
-# converts back to DataFrame so it can be merged with the RejectData_raw table 
-minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_down_minutes'])
-minutes_per_hour.index = list_shift_corrected.axes
-RejectData_sum_hour_rounded = RejectData_sum_hour_rounded.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
+try:
+    # transforms the df in series and groups it by hour
+    sum_minutes_per_hour = RobotFailure_spread[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
+    list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
+    list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
+    # uses custom function to spread the minutes across the next hours if they overflow
+    spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
+    # converts back to DataFrame so it can be merged with the RejectData_raw table 
+    minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_down_minutes'])
+    minutes_per_hour.index = list_shift_corrected.axes
+    RejectData_sum_hour_rounded = RejectData_sum_hour_rounded.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
+except IndexError:
+    print('expand_per_hours failed when calculating total_down_minutes')
+    
+    with open("log.txt", 'a') as file1: # appends to a log
+        file1.write("expand_per_hours failed when calculating total_down_minutes at " + datetime.datetime.now().strftime('%x %X'))
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # SPREAD THE HOURS FOR PLANNED EVENTS AND RETRIEVE PLANNED DOWNTIME #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 # transforms the df in series and groups it by hour
-sum_minutes_per_hour = RobotFailure_spread_planned[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
-list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
-list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
-# uses custom function to spread the minutes across the next hours if they overflow
-spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
-# converts back to DataFrame so it can be merged with the RejectData_raw table 
-minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_planned_minutes'])
-minutes_per_hour.index = list_shift_corrected.axes
-
+try:
+    sum_minutes_per_hour = RobotFailure_spread_planned[['DateTime', 'diff_min']].groupby(['DateTime']).sum()
+    list_shift_corrected = sum_minutes_per_hour['diff_min'].resample('H').sum() #transforms df in series
+    list_shift_corrected.index = list_shift_corrected.index+datetime.timedelta(hours=1) # shifts index by one to match other files
+    # uses custom function to spread the minutes across the next hours if they overflow
+    spread_minutes_per_hour = expand_per_hours(list_shift_corrected) 
+    # converts back to DataFrame so it can be merged with the RejectData_raw table 
+    minutes_per_hour = pd.DataFrame(spread_minutes_per_hour, columns=['total_planned_minutes'])
+    minutes_per_hour.index = list_shift_corrected.axes
+except IndexError:
+    print('expand_per_hours failed when calculating total_down_minutes')
+    with open("log.txt", 'a') as file1: # appends to a log
+        file1.write("expand_per_hours failed when calculating total_down_minutes at " + datetime.datetime.now().strftime('%x %X'))
 
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -389,19 +412,32 @@ minutes_per_hour.index = list_shift_corrected.axes
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # merges RejectData, total downtime, and planned downtime. Unplanned downtime is the difference between total and planned.
 # making the difference instead of a sum ensures there will be no instance of more than 60 minutes stopped per hour.
+# fills NaN with 0s to avoid the blanks in the end of the columns.
+
+# TODO extracting the time of RejectData gives the most updated time; use it on expand_per_hours to return already the
+# # right size vector and avoid having blanks at the end of the columns. 
 RejectData_sum_hour = RejectData_sum_hour_rounded.merge(minutes_per_hour.reset_index(), on=['DateTime', 'DateTime'], how='left')
 RejectData_sum_hour['total_planned_minutes']=RejectData_sum_hour['total_planned_minutes'].fillna(0)
+RejectData_sum_hour['total_down_minutes']=RejectData_sum_hour['total_down_minutes'].fillna(0)
 RejectData_sum_hour['total_unplanned_minutes'] = RejectData_sum_hour['total_down_minutes'] - RejectData_sum_hour['total_planned_minutes']
-RejectData_sum_hour.to_csv(robot_name + '_RejectData_sum_per_hour(1).csv') #exports to the file folder
+RejectData_sum_hour['total_unplanned_minutes']=RejectData_sum_hour['total_unplanned_minutes'].fillna(0)
+#RejectData_sum_hour.to_csv(robot_name + '_RejectData_sum_per_hour(1).csv') #exports to the file folder
 
 # https://stackoverflow.com/questions/19913659/pandas-conditional-creation-of-a-series-dataframe-column
 
-
-
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+#                   FILLS THE MISSING HOURS WITH NAs              #
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# creates a temporary df with the range of the original one to later merge it with original
 df = pd.DataFrame(pd.date_range(round_to_next_hour(RejectData_sum_hour['DateTime'].min()),\
-        round_to_next_hour(RejectData_sum_hour['DateTime'].max()),freq='H'),columns= ['DateTime'])\
+        round_to_next_hour(RejectData_sum_hour['DateTime'].max(),0),freq='H'),columns= ['DateTime'])\
             .merge(RejectData_sum_hour,on=['DateTime'],how='outer').fillna('N/A')
-df.to_csv(robot_name + '_complete_final_trial(2).csv') #exports to the file folder
+df.drop(df.tail(1).index,inplace=True) # as last row doesn't contain relevant data
+df.to_csv(robot_name + '_complete_final_trial(2)_2022.csv') #exports to the file folder
 
 #df.hour = df.date.dt.strftime('%H:%M:%S')
 #df.date = df.date.dt.strftime('%d-%m-%Y')
+
+
+with open("log.txt", 'a') as file1: # appends to a log
+    file1.write("Scrip finished running at " + datetime.datetime.now().strftime('%x %X') + '\n')
